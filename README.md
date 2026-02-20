@@ -1,19 +1,21 @@
-# 📊 Global Crisis Dataset — Análisis Académico
+# 📊 Análisis de Crisis Financieras Globales  
+### Limpieza, Tratamiento de Outliers y Análisis Exploratorio de Datos
 
-## 📌 Descripción General
+---
 
-Este proyecto desarrolla un pipeline reproducible y modular para el análisis del dataset de crisis financieras globales.
+## 📌 Contexto del Proyecto
 
-Incluye:
+Este proyecto tiene como objetivo analizar un dataset histórico de crisis financieras a nivel global, trabajando bajo un enfoque reproducible y modular en Python.
 
-- Limpieza estructurada del dataset
-- Tratamiento sistemático de outliers
-- Análisis Exploratorio de Datos (EDA)
-- Validación estructural y calidad de datos
-- Testing automatizado con pytest
-- Uso de tipado estricto y decoradores personalizados
+Más allá de simplemente explorar los datos, el trabajo se centra en:
 
-El objetivo es garantizar un proceso transparente, reproducible y metodológicamente sólido.
+- Construir un **pipeline de limpieza reproducible**
+- Aplicar **tratamiento sistemático de outliers**
+- Realizar un **Análisis Exploratorio de Datos (EDA) documentado**
+- Garantizar calidad mediante **testing automatizado**
+- Utilizar buenas prácticas como **funciones puras, tipado estricto y modularización**
+
+El enfoque es académico y metodológico: cada decisión de procesamiento está justificada.
 
 ---
 
@@ -22,47 +24,42 @@ El objetivo es garantizar un proceso transparente, reproducible y metodológicam
 Repositorio_APIS/
 │
 ├── data/
-│   ├── raw/
-│   └── processed/
+│   ├── raw/          # Dataset original
+│   └── processed/    # Dataset limpio y tratado
 ├── notebooks/
 │   └── 01_eda.ipynb
 ├── docs/
-│   └── img/
-├── src/
-│   ├── limpieza.py
-│   ├── outliers.py
-│   ├── estadisticas.py
-│   └── decoradores.py
+│   └── img/          # Gráficos usados en este README
+├── src/              # Módulos del proyecto
 ├── scripts/
 │   └── make_dataset.py
 ├── tests/
-├── requirements.txt
 └── README.md
 
 ---
 
-## ⚙️ Reproducibilidad
+## ⚙️ Cómo Reproducir el Proyecto
 
-### Crear entorno virtual
+### 1️⃣ Crear entorno virtual
 
 ```bash
 py -3.11 -m venv .venv
 .\.venv\Scripts\Activate.ps1
 ```
 
-### Instalar dependencias
+### 2️⃣ Instalar dependencias
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### Generar dataset procesado
+### 3️⃣ Generar el dataset procesado
 
 ```bash
 python -m scripts.make_dataset
 ```
 
-### Ejecutar tests
+### 4️⃣ Ejecutar tests
 
 ```bash
 pytest -q
@@ -70,73 +67,106 @@ pytest -q
 
 ---
 
-## 📊 Análisis Exploratorio (EDA)
+# 📊 Análisis Exploratorio de Datos (EDA)
 
 El análisis completo se encuentra en:
 
 notebooks/01_eda.ipynb
 
----
-
-## 🔎 Calidad de Datos
-
-- 3864 observaciones.
-- Cobertura longitudinal por país–año.
-- Variables macroeconómicas con nulos relevantes (`unemployment`, `real_interest_rate_10y`).
+A continuación se resumen los hallazgos más relevantes.
 
 ---
 
-## 📉 Tratamiento de Outliers
+## 🔎 1. Calidad de los Datos
 
-Se aplicó recorte por cuantiles (1%–99%) a:
+El dataset contiene:
 
-- inflation
-- gdp_growth
+- **3864 observaciones**
+- Información longitudinal por país–año
+- Amplia cobertura internacional
 
-Evidencia empírica:
+Se identificaron variables con valores nulos relevantes, especialmente:
 
-- Máx inflación RAW ≈ 11749
-- Máx inflación PROCESADO ≈ 228
+- `unemployment`
+- `real_interest_rate_10y`
 
-Este procedimiento reduce la influencia de valores extremos sin eliminar observaciones.
-
----
-
-## ⚠️ Variables de Crisis
-
-Las variables binarias presentan fuerte desbalance (predominio de no-crisis).
-
-Esto implica que futuros modelos predictivos deberán manejar el problema de class imbalance.
+Esto implica que cualquier modelo futuro deberá considerar estrategias de imputación o trabajar con subconjuntos de variables según disponibilidad.
 
 ---
 
-## 📈 Relaciones Observadas
+## 📉 2. Tratamiento de Outliers
 
-En años con crisis:
+Se detectaron valores extremos en variables como:
 
-- Inflación tiende a ser mayor.
-- Crecimiento del PIB tiende a ser menor.
+- `inflation`
+- `gdp_growth`
 
-Los resultados descriptivos son coherentes con teoría macroeconómica.
+En el dataset original, la inflación alcanzaba valores superiores a **11,000%**, reflejando episodios de hiperinflación.
+
+Se aplicó un recorte por cuantiles (1%–99%), reduciendo el máximo procesado a aproximadamente **228%**.
+
+Este procedimiento mejora la estabilidad estadística sin eliminar observaciones.
+
+### Distribución de inflación (procesado)
+
+![Distribución Inflación](docs/img/inflacion_hist.png)
+
+### Distribución de crecimiento del PIB
+
+![Distribución GDP](docs/img/gdp_hist.png)
+
+---
+
+## ⚠️ 3. Variables de Crisis
+
+Las variables binarias (`crisis_any`, `banking_crisis`, etc.) presentan un fuerte desbalance:
+
+- Predominan los años sin crisis
+- Los eventos de crisis son poco frecuentes
+
+Esto es coherente con la naturaleza de los eventos financieros, pero implica que futuros modelos deberán manejar el problema de **class imbalance**.
+
+---
+
+## 📈 4. Relaciones Observadas
+
+Al comparar años con y sin crisis:
+
+- La inflación tiende a ser mayor en años con crisis.
+- El crecimiento del PIB tiende a ser menor o más volátil.
+
+Aunque el análisis es descriptivo, los resultados son consistentes con teoría macroeconómica.
+
+### Matriz de correlación (variables numéricas)
+
+![Correlación](docs/img/correlacion.png)
+
+No se observan problemas severos de multicolinealidad, aunque algunas variables muestran correlaciones moderadas.
 
 ---
 
 ## 🧪 Calidad del Código
 
+El proyecto implementa buenas prácticas:
+
 - Funciones puras
-- Modularización clara
-- Tipado estático estricto
+- Modularización clara (`src/`)
 - Decoradores personalizados
-- Testing automatizado
+- Tipado estático estricto
+- Testing automatizado con pytest
+- Pipeline reproducible
 
 ---
 
-## 🎯 Conclusión Académica
+## 🎯 Conclusión General
 
-El dataset presenta estructura adecuada para análisis tipo panel y modelado predictivo.
+El dataset presenta una estructura adecuada para análisis tipo panel y modelado predictivo.
 
 El tratamiento de outliers mejora la estabilidad estadística y la interpretación de resultados.
 
-Las limitaciones principales se centran en la presencia de valores faltantes y desbalance en variables de crisis.
+Las principales limitaciones identificadas son:
 
-El pipeline desarrollado garantiza reproducibilidad y trazabilidad metodológica.
+- Presencia de valores faltantes en variables macroeconómicas
+- Desbalance en variables de crisis
+
+El pipeline desarrollado garantiza trazabilidad metodológica y reproducibilidad del análisis.
