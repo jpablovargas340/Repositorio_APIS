@@ -28,9 +28,10 @@ está justificada.
 
 Repositorio_APIS/ │ ├── data/ │ ├── raw/ \# Dataset original │ └──
 processed/ \# Dataset limpio y tratado ├── notebooks/ │ └── 01_eda.ipynb
-├── docs/ │ └── img/ \# Gráficos usados en este README ├── src/ \#
-Módulos del proyecto │ ├── schemas.py │ ├── api_manual.py ├── scripts/ │
-├── make_dataset.py │ └── demo_api_manual.py ├── tests/ └── README.md
+├── docs/ │ └── img/ \# Gráficos usados en este README ├── src/ │ ├──
+schemas.py │ ├── api_manual.py │ ├── clean_schemas.py │ ├── limpieza.py
+│ └── app.py \# Aplicación FastAPI ├── scripts/ │ ├── make_dataset.py │
+└── demo_api_manual.py ├── tests/ └── README.md
 
 ------------------------------------------------------------------------
 
@@ -61,7 +62,18 @@ python -m scripts.make_dataset
 python -m scripts.demo_api_manual
 ```
 
-### 5️⃣ Ejecutar tests
+### 5️⃣ Ejecutar API FastAPI
+
+``` bash
+uvicorn src.app:app --reload
+```
+
+Abrir en navegador:
+
+-   Swagger UI: http://127.0.0.1:8000/docs
+-   Redoc: http://127.0.0.1:8000/redoc
+
+### 6️⃣ Ejecutar tests
 
 ``` bash
 pytest -q
@@ -147,6 +159,57 @@ Output:
   "error": "JSON inválido"
 }
 ```
+
+------------------------------------------------------------------------
+
+# 🚀 API con FastAPI (ASGI + Documentación Automática)
+
+## 🎯 Resultado de Aprendizaje del Módulo
+
+-   Implementación de API real usando **FastAPI (ASGI)**.
+-   Uso de **Type Hinting como fuente de verdad**.
+-   Generación automática de documentación con **Swagger UI y Redoc**.
+-   Validación estricta de tipos mediante **Pydantic Strict Types**.
+-   Migración del pipeline de limpieza a un endpoint HTTP real.
+
+## 📌 Endpoints Disponibles
+
+### GET `/`
+
+Verifica que la API está funcionando.
+
+### GET `/health`
+
+Health check básico.
+
+### POST `/row`
+
+Consulta una fila del dataset procesado por `iso3` y `year`.
+
+Ejemplo:
+
+``` json
+{"iso3":"COL","year":1999}
+```
+
+### POST `/clean`
+
+Aplica el pipeline de limpieza completo (incluye tratamiento de
+outliers).
+
+Ejemplo:
+
+``` json
+{
+  "rows": [
+    {"iso3": " col ", "year": 1999, "inflation": 10.8, "gdp_growth": -4.2}
+  ]
+}
+```
+
+La validación es estricta: - No se permiten campos extra. - No se
+realiza casting automático de tipos. - Errores retornan código 422
+automáticamente.
 
 ------------------------------------------------------------------------
 
@@ -248,6 +311,7 @@ El proyecto implementa buenas prácticas:
 -   Tipado estático estricto
 -   Testing automatizado con pytest
 -   Pipeline reproducible
+-   Arquitectura ASGI moderna con FastAPI
 
 ------------------------------------------------------------------------
 
@@ -264,5 +328,6 @@ Las principales limitaciones identificadas son:
 -   Presencia de valores faltantes en variables macroeconómicas
 -   Desbalance en variables de crisis
 
-El pipeline desarrollado garantiza trazabilidad metodológica y
-reproducibilidad del análisis.
+El pipeline desarrollado garantiza trazabilidad metodológica,
+reproducibilidad del análisis y exposición moderna mediante API
+documentada automáticamente.
