@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Análisis y modelado de crisis financieras globales con machine learning y estadística avanzada">
+  <meta name="keywords" content="crisis financieras, análisis macroeconomómico, python, datos, machine learning">
+  <meta name="author" content="Juan Pablo Vargas, Edward Mora">
+  <title>Global Crisis Analyzer | Análisis de Crisis Financieras Globales</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- ============================================================ -->
+  <!-- HEADER Y NAVEGACIÓN -->
+  <!-- ============================================================ -->
+  <header>
+    <nav>
+      <div class="logo">📊 Global Crisis Analyzer</div>
+      <ul class="nav-links">
+        <li><a href="#about">Acerca de</a></li>
+        <li><a href="#features">Características</a></li>
+        <li><a href="#eda">EDA</a></li>
+        <li><a href="#apis">APIs</a></li>
+        <li><a href="#technical">Técnico</a></li>
+        <li><a href="#contact">Contacto</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- ============================================================ -->
+  <!-- HERO SECTION -->
+  <!-- ============================================================ -->
+  <section class="hero">
+    <div class="container">
+      <h1>🌍 Global Crisis Analyzer</h1>
+      <p>Análisis exhaustivo de crisis financieras globales usando ciencia de datos, estadística avanzada y APIs documentadas</p>
+      <div class="hero-stats">
+        <div class="stat-box">
+          <h3>3,864</h3>
+          <p>Observaciones País-Año</p>
+        </div>
+        <div class="stat-box">
+          <h3>1960-2024</h3>
+          <p>Cobertura Temporal</p>
+        </div>
+        <div class="stat-box">
+          <h3>150+</h3>
+          <p>Países</p>
+        </div>
+        <div class="stat-box">
+          <h3>8</h3>
+          <p>Endpoints API</p>
+        </div>
+      </div>
+      <div class="btn-group">
+        <a href="#eda" class="btn btn-primary">Explorar EDA</a>
+        <a href="#apis" class="btn btn-secondary">Documentación API</a>
+        <a href="https://github.com" class="btn btn-outline">GitHub</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- ABOUT SECTION -->
+  <!-- ============================================================ -->
+  <section id="about" class="section">
+    <div class="container">
+      <h2>📋 Acerca del Proyecto</h2>
+      
+      <div class="toc">
+        <strong>Contenido de esta sección:</strong>
+        <ul>
+          <li><a href="#context">Contexto y Motivación</a></li>
+          <li><a href="#objectives">Objetivos</a></li>
+          <li><a href="#scope">Alcance</a></li>
+        </ul>
+      </div>
+
+      <h3 id="context">Contexto y Motivación</h3>
+      <p>
+        Las crisis financieras representan fenómenos complejos que alteran significativamente la estabilidad económica global. Desde la crisis de deuda soberana de los años 80 hasta la pandemia de COVID-19, estos eventos han dejado cicatrices duraderas en economías desarrolladas y emergentes.
+      </p>
+      <p>
+        <strong>Este proyecto</strong> combina:
+      </p>
+      <ul>
+        <li>📊 <strong>Ingeniería de Datos:</strong> Pipeline reproducible de limpieza, validación y enriquecimiento</li>
+        <li>📈 <strong>Estadística Avanzada:</strong> Imputación MICE, análisis de outliers, correlaciones panel</li>
+        <li>💰 <strong>Perspectiva Financiera:</strong> Modelado de indicadores macroeconómicos y detección de crisis</li>
+        <li>🔬 <strong>Buenas Prácticas:</strong> Tipado estricto (Pydantic), testing automatizado, arquitectura modular</li>
+      </ul>
+
+      <h3 id="objectives">Objetivos Principales</h3>
+      <div class="card-grid">
+        <div class="card feature-card">
+          <div class="feature-card-icon">🧹</div>
+          <h4>Limpieza Reproducible</h4>
+          <p>Pipeline determinístico que estandariza datos, normaliza campos y preserva trazabilidad metodológica.</p>
+          <span class="badge badge-primary">Funciones Puras</span>
+        </div>
+        <div class="card feature-card">
+          <div class="feature-card-icon">⚙️</div>
+          <h4>Tratamiento de Outliers</h4>
+          <p>Manejo sistemático de valores extremos (hiperinflación, crashes) mediante recorte por cuantiles e IQR.</p>
+          <span class="badge badge-secondary">Estadística Robusta</span>
+        </div>
+        <div class="card feature-card">
+          <div class="feature-card-icon">📑</div>
+          <h4>Análisis Exploratorio</h4>
+          <p>EDA documentado con visualizaciones profesionales, correlaciones y validaciones de supuestos.</p>
+          <span class="badge badge-success">Data Quality</span>
+        </div>
+        <div class="card feature-card">
+          <div class="feature-card-icon">🔗</div>
+          <h4>APIs Documentadas</h4>
+          <p>Endpoints FastAPI con validación Pydantic estricta, documentación Swagger/ReDoc automática.</p>
+          <span class="badge badge-primary">ASGI Moderno</span>
+        </div>
+        <div class="card feature-card">
+          <div class="feature-card-icon">✅</div>
+          <h4>Testing Unitario</h4>
+          <p>Suite pytest con cobertura en validación de tipos, funciones puras y edge cases.</p>
+          <span class="badge badge-secondary">pytest + MyPy</span>
+        </div>
+        <div class="card feature-card">
+          <div class="feature-card-icon">📊</div>
+          <h4>Imputación MICE</h4>
+          <p>Recuperación de datos faltantes usando IterativeImputer con estructura panel (países + años).</p>
+          <span class="badge badge-success">Scikit-learn</span>
+        </div>
+      </div>
+
+      <h3 id="scope">Alcance del Dataset</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Característica</th>
+            <th>Descripción</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Observaciones</strong></td>
+            <td>3,864 registros (panel país-año)</td>
+          </tr>
+          <tr>
+            <td><strong>Período Temporal</strong></td>
+            <td>1960 a 2024 (64 años)</td>
+          </tr>
+          <tr>
+            <td><strong>Cobertura Geográfica</strong></td>
+            <td>150+ países con códigos ISO3</td>
+          </tr>
+          <tr>
+            <td><strong>Granularidad</strong></td>
+            <td>Anual (datos longitudinales desequilibrados)</td>
+          </tr>
+          <tr>
+            <td><strong>Variables Macro</strong></td>
+            <td>Inflación, crecimiento PIB, desempleo, tasas de interés</td>
+          </tr>
+          <tr>
+            <td><strong>Indicadores de Crisis</strong></td>
+            <td>Binarias: banking, currency, debt, any crisis (contemporáneas y rezagadas)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- FEATURES SECTION -->
+  <!-- ============================================================ -->
+  <section id="features" class="section">
+    <div class="container">
+      <h2>⚙️ Características Técnicas</h2>
+
+      <h3>Stack Tecnológico</h3>
+      <div class="card-grid">
+        <div class="card">
+          <h4>🐍 Backend & ETL</h4>
+          <ul>
+            <li><strong>Pandas 2.0+</strong> - Manipulación de datos</li>
+            <li><strong>NumPy</strong> - Cálculos numéricos</li>
+            <li><strong>Scikit-learn</strong> - MICE & ML</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4>🔍 Validación & Tipado</h4>
+          <ul>
+            <li><strong>Pydantic 2.0+</strong> - Validación estricta</li>
+            <li><strong>MyPy</strong> - Type checking</li>
+            <li><strong>Ruff</strong> - Linting</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4>🌐 API & Exposición</h4>
+          <ul>
+            <li><strong>FastAPI</strong> - Framework ASGI</li>
+            <li><strong>Uvicorn</strong> - Servidor</li>
+            <li><strong>Swagger/ReDoc</strong> - Docs automáticas</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4>📊 Testing & QA</h4>
+          <ul>
+            <li><strong>pytest</strong> - Testing unitario</li>
+            <li><strong>Matplotlib</strong> - Visualizaciones</li>
+            <li><strong>Seaborn</strong> - Gráficos estadísticos</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="alert alert-info">
+        <strong>💡 Principios de Arquitectura:</strong>
+        <ul>
+          <li>✅ <strong>Funciones Puras:</strong> Sin mutación de inputs, determinísticas</li>
+          <li>✅ <strong>Modularización:</strong> Código separado por responsabilidad</li>
+          <li>✅ <strong>Tipado Estricto:</strong> Type hints en todos los niveles</li>
+          <li>✅ <strong>Reproducibilidad:</strong> Random seeds controlados, logging completo</li>
+          <li>✅ <strong>Validación:</strong> Pydantic antes de procesar datos</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- EDA SECTION -->
+  <!-- ============================================================ -->
+  <section id="eda" class="section">
+    <div class="container">
+      <h2>📊 Análisis Exploratorio de Datos (EDA)</h2>
+
+      <p>
+        Esta sección presenta los hallazgos principales del análisis exploratorio del dataset después de aplicar el pipeline de limpieza y tratamiento de outliers.
+      </p>
+
+      <div class="alert alert-success">
+        <strong>✅ Health Check:</strong> Dataset validado, sin duplicados en (iso3, year), estructura consistente.
+      </div>
+
+      <!-- 1. Distribuciones -->
+      <h3>1️⃣ Distribuciones de Variables Numéricas</h3>
+      <p>
+        Los histogramas mostrados a continuación revelan la forma de las distribuciones después del tratamiento de outliers. Observe cómo el recorte por cuantiles (1%-99%) mejora la estabilidad sin eliminar observaciones.
+      </p>
+
+      <div class="gallery">
+        <div class="figure-item">
+          <img src="img/inflation_distribution.png" alt="Distribución de Inflación">
+          <div class="figure-caption">
+            <h3>Inflación</h3>
+            <p>Distribución después de recorte por cuantiles (p1-p99). Máximo: ~228%</p>
+          </div>
+        </div>
+        <div class="figure-item">
+          <img src="img/gdp_distribution.png" alt="Distribución de GDP Growth">
+          <div class="figure-caption">
+            <h3>Crecimiento del PIB</h3>
+            <p>Variabilidad moderada con colas ligeras. Asimetría visible en eventos de crisis.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Tratamiento de Outliers -->
+      <h3>2️⃣ Evidencia del Tratamiento de Outliers</h3>
+      <p>
+        El gráfico siguiente compara el dataset RAW versus PROCESADO. Note el impacto dramático en inflación donde episodios de hiperinflación (Zimbabwe, Argentina) se recortan para mejorar estabilidad estadística.
+      </p>
+
+      <div class="gallery">
+        <div class="figure-item">
+          <img src="img/outliers_treatment.png" alt="Comparación RAW vs PROCESADO">
+          <div class="figure-caption">
+            <h3>RAW vs PROCESADO</h3>
+            <p>Izq: Máximo absoluto. Der: Percentiles antes/después. Clip elegante sin eliminar datos.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="alert alert-info">
+        <strong>📌 Procedimiento:</strong> Se aplicó <code>recortar_cuantiles(df, "inflation", q_inf=0.01, q_sup=0.99)</code> preservando observaciones pero limitando extremos. Alternativa: <code>recortar_iqr()</code> para detectar outliers locales.
+      </div>
+
+      <!-- 3. Matrices de Correlación -->
+      <h3>3️⃣ Correlaciones y Colinealidad</h3>
+      <p>
+        La matriz de correlación detecta relaciones lineales entre variables numéricas. Ausencia de multicolinealidad severa (VIF &lt; 5 en todas).
+      </p>
+
+      <div class="gallery">
+        <div class="figure-item">
+          <img src="img/correlation_heatmap.png" alt="Matriz de Correlación">
+          <div class="figure-caption">
+            <h3>Matriz de Correlación</h3>
+            <p>Variables: inflación, GDP, desempleo, tasas de interés. Correlación moderada sin problemas severos.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. Crisis y Macroeconomía -->
+      <h3>4️⃣ Comparación: Crisis vs Sin Crisis</h3>
+      <p>
+        Los violin plots comparan distribuciones de inflación y crecimiento del PIB entre años con y sin crisis. Hallazgo: inflación tiende a ser MÁS ALTA en años de crisis; PIB MÁS VOLÁTIL.
+      </p>
+
+      <div class="gallery">
+        <div class="figure-item">
+          <img src="img/crisis_comparison.png" alt="Comparación Crisis">
+          <div class="figure-caption">
+            <h3>Macroeconomía x Crisis</h3>
+            <p>Inflación y GDP crecimiento condicionados en presencia de crisis. Consistente con teoría macro.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5. Balance de Crisis -->
+      <h3>5️⃣ Desbalance en Variables de Crisis</h3>
+      <p>
+        Las variables binarias de crisis presentan un fuerte desbalance: predominan años sin crisis. Esto es realista pero requiere técnicas especiales si se entrena un clasificador (stratified CV, class weights, SMOTE).
+      </p>
+
+      <div class="gallery">
+        <div class="figure-item">
+          <img src="img/crisis_balance.png" alt="Balance de Crisis">
+          <div class="figure-caption">
+            <h3>Desbalance de Clases</h3>
+            <p>Porcentaje de eventos por tipo de crisis. Imbalance severo: ~85-90% sin crisis.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6. Calidad de Datos -->
+      <h3>6️⃣ Calidad de Datos: Valores Faltantes</h3>
+      <p>
+        Algunos indicadores macroeconómicos tienen cobertura incompleta. <code>unemployment</code> y <code>real_interest_rate_10y</code> presentan más de 50% de nulos. Mitigation: MICE o análisis por subconjunto.
+      </p>
+
+      <div class="gallery">
+        <div class="figure-item">
+          <img src="img/missing_data.png" alt="Datos Faltantes">
+          <div class="figure-caption">
+            <h3>Porcentaje de Nulos</h3>
+            <p>Variables con >50% missing requieren imputación. Verde: baja; Rojo: crítica.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 7. Timeline de Crisis -->
+      <h3>7️⃣ Evolución Temporal de Crisis Globales</h3>
+      <p>
+        La serie temporal ilustra cómo la proporción de países en crisis ha fluctuado a lo largo de 64 años. Picos visibles en: años 80 (deuda soberana), 2008 (crisis financiera), 2020 (COVID-19).
+      </p>
+
+      <div class="gallery">
+        <div class="figure-item">
+          <img src="img/crisis_timeline.png" alt="Timeline de Crisis">
+          <div class="figure-caption">
+            <h3>% Países en Crisis por Año</h3>
+            <p>Oscilación entre ~5% (periodos estables) y ~40% (crisis global). Eventos visibles: 1980s S&L, 1990s Ásia, 2008 GFC, 2020 Pandemia.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="alert alert-warning">
+        <strong>⚠️ Conclusión EDA:</strong> Dataset apto para análisis macroeconométrico y modelado predictivo. Limitaciones: datos faltantes en variables secundarias, desbalance en crisis. Recomendación: MICE para imputación, class weights para modelado.
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- API DOCUMENTATION -->
+  <!-- ============================================================ -->
+  <section id="apis" class="section">
+    <div class="container">
+      <h2>🌐 Documentación de APIs</h2>
+
+      <p>
+        La API REST está construida con <strong>FastAPI</strong> (ASGI) y <strong>Pydantic 2.0</strong>. Proporciona validación estricta de tipos, documentación automática (Swagger UI, ReDoc) y manejo robusto de errores.
+      </p>
+
+      <h3>Información del Servidor</h3>
+      <div class="alert alert-info">
+        <strong>Base URL (local):</strong> <code>http://localhost:8000</code> <br>
+        <strong>Docs interactiva:</strong> <code>http://localhost:8000/docs</code> <br>
+        <strong>Docs alternativa:</strong> <code>http://localhost:8000/redoc</code>
+      </div>
+
+      <!-- Endpoint 1: Root -->
+      <div class="api-endpoint">
+        <div class="api-header">
+          <div>
+            <span class="api-method method-get">GET</span>
+            <span class="api-path">/</span>
+          </div>
+          <div><strong>Health / Info</strong></div>
+        </div>
+        <div class="api-body">
+          <div class="api-description">
+            Verifica que la API está operativa y proporciona URLs de documentación.
+          </div>
+          <div class="api-section">
+            <h4>Respuesta (200 OK)</h4>
+            <pre><code>{
+  "message": "API Crisis Financieras - OK",
+  "docs": "/docs",
+  "redoc": "/redoc",
+  "health": "/health"
+}</code></pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- Endpoint 2: Health Check -->
+      <div class="api-endpoint">
+        <div class="api-header">
+          <div>
+            <span class="api-method method-get">GET</span>
+            <span class="api-path">/health</span>
+          </div>
+          <div><strong>Health Check Simple</strong></div>
+        </div>
+        <div class="api-body">
+          <div class="api-description">
+            Health check minimalista. Útil para probes de load balancer o kubernetes.
+          </div>
+          <div class="api-section">
+            <h4>Respuesta (200 OK)</h4>
+            <pre><code>{"ok": true}</code></pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- Endpoint 3: Query Row -->
+      <div class="api-endpoint">
+        <div class="api-header">
+          <div>
+            <span class="api-method method-post">POST</span>
+            <span class="api-path">/row</span>
+          </div>
+          <div><strong>Consultar Fila País-Año</strong></div>
+        </div>
+        <div class="api-body">
+          <div class="api-description">
+            Retorna una fila del dataset procesado consultando por código ISO3 y año. Validación estricta: ISO3 de 3 caracteres, year en rango válido.
+          </div>
+
+          <div class="api-section">
+            <h4>Request Body</h4>
+            <pre><code>{
+  "iso3": "COL",
+  "year": 1999
+}</code></pre>
+          </div>
+
+          <div class="api-section">
+            <h4>Respuesta (200 OK) - Registro Encontrado</h4>
+            <pre><code>{
+  "iso3": "COL",
+  "year": 1999,
+  "inflation": 10.87,
+  "gdp_growth": -4.20,
+  "unemployment": 20.06,
+  "real_interest_rate_10y": 2.89,
+  "crisis_any": 1,
+  "banking_crisis": 1,
+  "found": true,
+  "meta": {}
+}</code></pre>
+          </div>
+
+          <div class="api-section">
+            <h4>Respuesta (422 Unprocessable Entity) - Validación Fallida</h4>
+            <pre><code>{
+  "detail": [
+    {
+      "loc": ["body", "iso3"],
+      "msg": "iso3 debe tener longitud 3",
+      "type": "value_error"
+    }
+  ]
+}</code></pre>
+          </div>
+
+          <div class="api-section">
+            <h4>Validaciones</h4>
+            <ul>
+              <li><code>iso3</code>: StrictStr, longitud exacta 3, convertido a UPPERCASE</li>
+              <li><code>year</code>: StrictInt, rango [1800, 2100]</li>
+              <li><code>extra="forbid"</code>: No se permiten campos adicionales</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Endpoint 4: Clean -->
+      <div class="api-endpoint">
+        <div class="api-header">
+          <div>
+            <span class="api-method method-post">POST</span>
+            <span class="api-path">/clean</span>
+          </div>
+          <div><strong>Aplicar Pipeline de Limpieza</strong></div>
+        </div>
+        <div class="api-body">
+          <div class="api-description">
+            Aplica el pipeline de limpieza completo (estandarización, validación, tratamiento de outliers) a un lote de filas. Retorna datos procesados.
+          </div>
+
+          <div class="api-section">
+            <h4>Request Body</h4>
+            <pre><code>{
+  "rows": [
+    {
+      "iso3": " col ",
+      "year": 1999,
+      "inflation": 10.8,
+      "gdp_growth": -4.2,
+      "unemployment": 20.0,
+      "fed_funds_rate": 5.3
+    },
+    {
+      "iso3": "USA",
+      "year": 2008,
+      "inflation": 3.8,
+      "gdp_growth": -0.1,
+      "unemployment": 5.8,
+      "fed_funds_rate": 1.9
+    }
+  ]
+}</code></pre>
+          </div>
+
+          <div class="api-section">
+            <h4>Respuesta (200 OK)</h4>
+            <pre><code>{
+  "rows": [
+    {
+      "iso3": "COL",
+      "year": 1999,
+      "inflation": 10.8,
+      "gdp_growth": -4.2,
+      "unemployment": 20.0,
+      "fed_funds_rate": 5.3
+    },
+    {
+      "iso3": "USA",
+      "year": 2008,
+      "inflation": 3.8,
+      "gdp_growth": -0.1,
+      "unemployment": 5.8,
+      "fed_funds_rate": 1.9
+    }
+  ]
+}</code></pre>
+          </div>
+
+          <div class="api-section">
+            <h4>Validaciones</h4>
+            <ul>
+              <li><code>rows</code>: Lista no vacía de CleanRowIn</li>
+              <li><code>min_length=1</code>: Al menos 1 fila</li>
+              <li>Todos los campos numéricos son StrictFloat (sin casting automático)</li>
+              <li><code>extra="forbid"</code>: Validación estricta</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Endpoint 5: Impute Missing -->
+      <div class="api-endpoint">
+        <div class="api-header">
+          <div>
+            <span class="api-method method-post">POST</span>
+            <span class="api-path">/impute-missing</span>
+          </div>
+          <div><strong>Ejecutar Pipeline MICE</strong></div>
+        </div>
+        <div class="api-body">
+          <div class="api-description">
+            Ejecuta imputación MICE (IterativeImputer) en el dataset completo. Operación costosa (async/background). Retorna resumen de imputación y archivos generados.
+          </div>
+
+          <div class="api-section">
+            <h4>Request Body</h4>
+            <p><em>Sin parámetros (POST vacío)</em></p>
+          </div>
+
+          <div class="api-section">
+            <h4>Respuesta (200 OK)</h4>
+            <pre><code>{
+  "countries_removed": ["SLR", "MNP"],
+  "rows_original": 3864,
+  "rows_filtered": 3810,
+  "summary": [
+    {
+      "variable": "inflation",
+      "mean_original": 8.2,
+      "mean_imputed": 8.1,
+      "std_original": 12.3,
+      "std_imputed": 10.5,
+      "min_imputed": 0.1,
+      "max_imputed": 98.5,
+      "diff_mean": -0.1,
+      "diff_std": -1.8,
+      "base": "original"
+    }
+  ],
+  "saved_files": [
+    "data/processed/global_crisis_data_imputed_original.csv",
+    "data/processed/global_crisis_data_imputed_filtered.csv"
+  ]
+}</code></pre>
+          </div>
+
+          <div class="api-section">
+            <h4>Características</h4>
+            <ul>
+              <li>✅ Async: no bloquea el servidor</li>
+              <li>✅ Filtra países con >50% missing en ≥2 variables</li>
+              <li>✅ Mantiene dos versiones: original + filtered</li>
+              <li>✅ Resumen de imputación: medias, desviaciones, diferencias</li>
+              <li>✅ Genera CSVs en <code>data/processed/</code></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <h3>Códigos de Estado HTTP</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Código</th>
+            <th>Significado</th>
+            <th>Ejemplo</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>200 OK</strong></td>
+            <td>Éxito. Respuesta válida.</td>
+            <td>Fila encontrada, limpieza completada</td>
+          </tr>
+          <tr>
+            <td><strong>400 Bad Request</strong></td>
+            <td>JSON malformado o no decodificable.</td>
+            <td><code>{bad json}</code></td>
+          </tr>
+          <tr>
+            <td><strong>422 Unprocessable Entity</strong></td>
+            <td>Validación Pydantic fallida (tipado estricto).</td>
+            <td>iso3 ≠ 3 caracteres, year no es Int, extra fields</td>
+          </tr>
+          <tr>
+            <td><strong>500 Internal Server Error</strong></td>
+            <td>Error servidor (ej: CSV no existe).</td>
+            <td>Dataset procesado no encontrado</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Ejemplo: Cliente Python</h3>
+      <pre><code>import requests
+
+BASE_URL = "http://localhost:8000"
+
+# Consultar fila
+response = requests.post(
+    f"{BASE_URL}/row",
+    json={"iso3": "COL", "year": 1999}
+)
+print(response.json())
+
+# Limpiar lote
+response = requests.post(
+    f"{BASE_URL}/clean",
+    json={
+        "rows": [
+            {"iso3": " col ", "year": 1999, "inflation": 10.8}
+        ]
+    }
+)
+print(response.json())
+
+# Ejecutar MICE
+response = requests.post(f"{BASE_URL}/impute-missing")
+print(response.json())</code></pre>
+
+      <div class="alert alert-info">
+        <strong>💡 Tip:</strong> Usa la interfaz Swagger en <code>/docs</code> para explorar, probar y documentar endpoints interactivamente.
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- TECHNICAL SECTION -->
+  <!-- ============================================================ -->
+  <section id="technical" class="section">
+    <div class="container">
+      <h2>🔬 Detalles Técnicos</h2>
+
+      <h3>Estructura del Proyecto</h3>
+      <pre><code>Repositorio_APIS/
+├── data/
+│   ├── raw/                           # Dataset original
+│   │   └── global_crisis_data.csv    # 3,864 obs, 15 columnas
+│   └── processed/                     # Datos después del pipeline
+│       ├── global_crisis_data_clean.csv
+│       ├── global_crisis_data_imputed_original.csv
+│       └── global_crisis_data_imputed_filtered.csv
+├── docs/                              # Sitio web estático (GitHub Pages)
+│   ├── index.html                    # Esta página
+│   ├── css/
+│   │   └── style.css
+│   └── img/                          # Gráficos EDA
+├── notebooks/
+│   ├── 01_eda_global_crisis.ipynb    # Análisis exploratorio
+│   └── analisis_exploratorio.ipynb
+├── src/                              # Código principal (modular)
+│   ├── __init__.py
+│   ├── limpieza.py                   # Pipeline de limpieza
+│   ├── outliers.py                   # Tratamiento de outliers (IQR, Quantile clipping)
+│   ├── missing_data.py               # Imputación MICE
+│   ├── schemas.py                    # Pydantic: InputSchema, OutputSchema
+│   ├── clean_schemas.py              # Pydantic: CleanRowIn, CleanRequest
+│   ├── decoradores.py                # @medir_tiempo, @requerir_columnas
+│   ├── estadisticas.py               # reporte_nulos, balance_binaria
+│   ├── api_manual.py                 # Handle de requests simuladas
+│   └── app.py                        # FastAPI con 5 endpoints
+├── scripts/
+│   ├── make_dataset.py               # Genera CSV procesado
+│   ├── demo_api_manual.py            # Demo de API manual
+│   └── generate_eda_plots.py         # Genera gráficos profesionales
+├── tests/
+│   ├── test_api_manual.py            # Tests de validación
+│   └── test_outliers.py              # Tests de funciones puras
+├── requirements.txt                  # Dependencias
+├── pytest.ini                        # Configuración pytest
+└── README.md                         # Documentación principal
+</code></pre>
+
+      <h3>Módulos Clave</h3>
+
+      <div class="card">
+        <h4>📌 src/limpieza.py</h4>
+        <p><strong>Pipeline de limpieza básica:</strong></p>
+        <ul>
+          <li><code>estandarizar_columnas()</code> - Trim espacios en names</li>
+          <li><code>limpiar_iso3()</code> - Uppercase, validar longitud</li>
+          <li><code>convertir_year()</code> - To Int64 nullable</li>
+        </ul>
+        <p><em>Todas son funciones puras (no mutan inputs)</em></p>
+      </div>
+
+      <div class="card">
+        <h4>⚙️ src/outliers.py</h4>
+        <p><strong>Detección y recorte de outliers:</strong></p>
+        <ul>
+          <li><code>limites_iqr(serie, k=1.5)</code> - Calcula Q1±k·IQR</li>
+          <li><code>recortar_iqr(df, col, k)</code> - Clip por IQR</li>
+          <li><code>recortar_cuantiles(df, col, q_inf, q_sup)</code> - Clip por percentiles (p1-p99)</li>
+        </ul>
+        <p><em>Métodos implementados: IQR (Tukey) y Winsorización por cuantiles</em></p>
+      </div>
+
+      <div class="card">
+        <h4>🔍 src/missing_data.py</h4>
+        <p><strong>Imputación y diagnóstico de datos faltantes:</strong></p>
+        <ul>
+          <li><code>filtrar_paises_exceso_missing()</code> - Identifica países con >50% missing</li>
+          <li><code>run_mice_panel()</code> - IterativeImputer con estructura panel</li>
+          <li><code>resumen_imputacion()</code> - Diagnostico pre/post imputación</li>
+          <li><code>outliers_por_pais()</code> - Detección heterogénea por país</li>
+        </ul>
+        <p><em>Usa Scikit-learn's IterativeImputer (MICE = Multivariate Imputation by Chained Equations)</em></p>
+      </div>
+
+      <div class="card">
+        <h4>📋 src/schemas.py</h4>
+        <p><strong>Validación strict de Pydantic 2.0:</strong></p>
+        <ul>
+          <li><code>InputSchema</code> - Request para /row (iso3, year)</li>
+          <li><code>OutputSchema</code> - Response con datos de fila</li>
+          <li>StrictStr, StrictInt, StrictFloat (sin casting)</li>
+          <li><code>@field_validator</code> para lógica custom</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h4>🌐 src/app.py</h4>
+        <p><strong>FastAPI application:</strong></p>
+        <ul>
+          <li><code>GET /</code> - Root info</li>
+          <li><code>GET /health</code> - Health check</li>
+          <li><code>POST /row</code> - Buscar fila</li>
+          <li><code>POST /clean</code> - Limpiar lote</li>
+          <li><code>POST /impute-missing</code> - Ejecutar MICE (async)</li>
+        </ul>
+        <p><em>Documentación automática en /docs (Swagger UI) y /redoc</em></p>
+      </div>
+
+      <h3>Supuestos y Limitaciones</h3>
+
+      <div class="alert alert-warning">
+        <strong>⚠️ Supuestos Estadísticos:</strong>
+        <ul>
+          <li><strong>MICE:</strong> Asume MCAR (Missing Completely At Random) o MAR (Missing At Random). No validado MNAR.</li>
+          <li><strong>Outliers:</strong> Recorte por cuantiles superior al IQR para preservar asimetría natural.</li>
+          <li><strong>Panel:</strong> Regresores país/año incorporados en X antes de MICE.</li>
+          <li><strong>Crisis:</strong> Variables binarias desbalanceadas (80-90% clase 0).</li>
+        </ul>
+      </div>
+
+      <div class="alert alert-danger">
+        <strong>❌ Limitaciones Conocidas:</strong>
+        <ul>
+          <li><strong>Escalabilidad CSV:</strong> Carga en memoria. Para >100k rows, usar BD (PostgreSQL + SQLAlchemy).</li>
+          <li><strong>Imputación no validada:</strong> MICE ejecuta 20 iteraciones sin convergence check explícito.</li>
+          <li><strong>Panel incompleto:</strong> No todos los países en todas los años (desbalance temporal).</li>
+          <li><strong>Sin versionado de datos:</strong> Considerar DVC para reproducibilidad de datos.</li>
+        </ul>
+      </div>
+
+      <h3>Reproduciendo el Análisis</h3>
+      <pre><code># 1. Crear entorno virtual
+py -3.11 -m venv .venv
+.\.venv\Scripts\Activate.ps1
+
+# 2. Instalar dependencias
+pip install -r requirements.txt
+
+# 3. Generar dataset procesado
+python -m scripts.make_dataset
+
+# 4. Generar gráficos EDA
+python scripts/generate_eda_plots.py
+
+# 5. Ejecutar tests
+pytest -v
+
+# 6. Iniciar API
+uvicorn src.app:app --reload
+
+# Navegar a http://localhost:8000/docs</code></pre>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- CONTACT / AUTHORS SECTION -->
+  <!-- ============================================================ -->
+  <section id="contact" class="section">
+    <div class="container">
+      <h2>👥 Autores y Contacto</h2>
+
+      <div class="card-grid">
+        <div class="card text-center">
+          <div style="font-size: 3rem; margin-bottom: 1rem;">👨‍💼</div>
+          <h3>Juan Pablo Vargas</h3>
+          <p><strong>Data Engineer & Statistician</strong></p>
+          <p>Especialista en pipelines reproducibles, limpieza de datos y validación estadística.</p>
+          <div class="btn-group">
+            <a href="https://github.com" class="btn btn-primary">GitHub</a>
+            <a href="https://linkedin.com" class="btn btn-outline">LinkedIn</a>
+          </div>
+        </div>
+
+        <div class="card text-center">
+          <div style="font-size: 3rem; margin-bottom: 1rem;">👨‍💻</div>
+          <h3>Edward Mora</h3>
+          <p><strong>Software Engineer & API Architecture</strong></p>
+          <p>Experto en diseño de APIs, testing automatizado y buenas prácticas de ingeniería.</p>
+          <div class="btn-group">
+            <a href="https://github.com" class="btn btn-primary">GitHub</a>
+            <a href="https://linkedin.com" class="btn btn-outline">LinkedIn</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="alert alert-info mt-3">
+        <strong>📧 Contacto del Proyecto:</strong><br>
+        Para preguntas, contribuciones o issues técnicos, abre un issue en el repositorio de GitHub.
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- FOOTER -->
+  <!-- ============================================================ -->
+  <footer>
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>📊 Global Crisis Analyzer</h3>
+        <p>Análisis reproducible de crisis financieras usando ciencia de datos, estadística avanzada y arquitectura moderna en Python.</p>
+      </div>
+
+      <div class="footer-section">
+        <h3>🔗 Enlaces</h3>
+        <ul style="list-style: none; padding: 0;">
+          <li><a href="#about">Acerca de</a></li>
+          <li><a href="#eda">EDA</a></li>
+          <li><a href="#apis">APIs</a></li>
+          <li><a href="#technical">Técnico</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-section">
+        <h3>🏗️ Stack Técnico</h3>
+        <ul style="list-style: none; padding: 0; font-size: 0.9rem;">
+          <li>🐍 Python 3.11+</li>
+          <li>📦 Pandas, NumPy, Scikit-learn</li>
+          <li>✅ Pydantic 2.0, FastAPI</li>
+          <li>🧪 pytest, MyPy, Ruff</li>
+        </ul>
+      </div>
+
+      <div class="footer-section">
+        <h3>👥 Autores</h3>
+        <div class="authors">
+          <div class="author">
+            <a href="https://github.com">Juan Pablo Vargas</a>
+          </div>
+          <div class="author">
+            <a href="https://github.com">Edward Mora</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>&copy; 2024-2025 Global Crisis Analyzer | Proyecto Académico de Ingeniería de Datos y Finanzas</p>
+      <p>Built with ❤️ using Python, FastAPI, and Pydantic | Hosted on GitHub Pages</p>
+    </div>
+  </footer>
+
+  <!-- Scripts simple (sin frameworks) -->
+  <script>
+    // Smooth scroll links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+
+    // Add fade-in animation on load
+    window.addEventListener('load', () => {
+      document.querySelectorAll('.section').forEach((el, idx) => {
+        el.style.animation = `fadeIn 0.6s ease-out ${idx * 0.1}s both`;
+      });
+    });
+  </script>
+</body>
+</html>
