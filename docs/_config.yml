@@ -1,0 +1,30 @@
+# GitHub Pages Configuration
+# Rama: main/master -> publica contenido de /docs
+
+title: Global Crisis Analyzer
+description: Análisis exhaustivo de crisis financieras globales
+author: Juan Pablo Vargas & Edward Mora
+url: https://github.com
+repository: your-username/Repositorio_APIS
+
+# Tema (opcional)
+theme: jekyll-theme-minimal
+
+# Opciones de build
+markdown: kramdown
+kramdown:
+  auto_ids: true
+  toc_levels: 1..6
+
+# Excludes
+exclude:
+  - .gitignore
+  - README.md
+  - CHANGELOG.md
+  - node_modules
+
+# Collections
+collections:
+  docs:
+    output: true
+    permalink: "/:collection/:name"
