@@ -15,13 +15,10 @@ class CleanRowIn(BaseModel):
     iso3: StrictStr = Field(..., description="Código ISO3, ej: COL")
     year: StrictInt = Field(..., ge=1800, le=2100, description="Año")
 
-    # Campos que tu pipeline trata (outliers en inflation y gdp_growth)
     inflation: Optional[StrictFloat] = None
     gdp_growth: Optional[StrictFloat] = None
-
-    # Otros opcionales que suelen venir en tu dataset
     unemployment: Optional[StrictFloat] = None
-    real_interest_rate_10y: Optional[StrictFloat] = None
+    fed_funds_rate: Optional[StrictFloat] = None
 
     @field_validator("iso3")
     @classmethod

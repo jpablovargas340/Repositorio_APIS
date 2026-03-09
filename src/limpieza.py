@@ -39,16 +39,10 @@ def pipeline_limpieza_basica(df: pd.DataFrame) -> pd.DataFrame:
     df_limpio = convertir_year(df_limpio)
     return df_limpio
 
-from src.outliers import recortar_cuantiles
 
 def pipeline_limpieza_completa(df: pd.DataFrame) -> pd.DataFrame:
     """
-    Limpieza básica + tratamiento de outliers estandarizable.
+    Limpieza básica únicamente.
+    No modifica outliers.
     """
-    df_limpio = pipeline_limpieza_basica(df)
-
-    # Outliers recomendados para este dataset
-    df_limpio = recortar_cuantiles(df_limpio, "inflation", 0.01, 0.99)
-    df_limpio = recortar_cuantiles(df_limpio, "gdp_growth", 0.01, 0.99)
-
-    return df_limpio
+    return pipeline_limpieza_basica(df)
