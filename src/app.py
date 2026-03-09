@@ -11,8 +11,23 @@ from src.schemas import InputSchema, OutputSchema
 from src.clean_schemas import CleanRequest, CleanResponse
 from src.limpieza import pipeline_limpieza_completa
 
+from src.missing_data import (
+    filtrar_paises_exceso_missing,
+    run_mice_panel,
+    resumen_imputacion,
+)
 
 RUTA_PROCESADO = Path("data/processed/global_crisis_data_clean.csv")
+
+RUTA_RAW = Path("data/raw/global_crisis_data.csv")
+
+RUTA_IMPUTED_ORIGINAL = Path(
+    "data/processed/global_crisis_data_imputed_original.csv"
+)
+
+RUTA_IMPUTED_FILTERED = Path(
+    "data/processed/global_crisis_data_imputed_filtered.csv"
+)
 
 app = FastAPI(
     title="API Crisis Financieras Globales",
@@ -101,6 +116,57 @@ def _clean_rows(rows: list[dict]) -> list[dict]:
 
     return df_out.to_dict(orient="records")
 
+def _run_missing_pipeline() -> dict:
+
+    if not RUTA_RAW.exists():
+        raise HTTPException(
+            status_code=500,
+            detail="No se encontró el dataset raw"
+        )
+
+    df = pd.read_csv(RUTA_RAW)
+
+    # -------------------
+    # Filtrar países
+    # -------------------
+    df_filtered, countries_to_drop, _ = filtrar_paises_exceso_missing(df)
+
+    # -------------------
+    # MICE base original
+    # -------------------
+    df_imputed_orig, _ = run_mice_panel(df)
+
+    # -------------------
+    # MICE base filtrada
+    # -------------------
+    df_imputed_filt, _ = run_mice_panel(df_filtered)
+
+    # -------------------
+    # Guardar datasets
+    # -------------------
+    RUTA_IMPUTED_ORIGINAL.parent.mkdir(parents=True, exist_ok=True)
+
+    df_imputed_orig.to_csv(RUTA_IMPUTED_ORIGINAL, index=False)
+    df_imputed_filt.to_csv(RUTA_IMPUTED_FILTERED, index=False)
+
+    # -------------------
+    # Resumen imputación
+    # -------------------
+    summary_orig = resumen_imputacion(df, df_imputed_orig, base_name="original")
+    summary_filt = resumen_imputacion(df_filtered, df_imputed_filt, base_name="filtered")
+
+    summary = pd.concat([summary_orig, summary_filt], ignore_index=True)
+
+    return {
+        "countries_removed": countries_to_drop,
+        "rows_original": len(df),
+        "rows_filtered": len(df_filtered),
+        "summary": summary.to_dict(orient="records"),
+        "saved_files": [
+            str(RUTA_IMPUTED_ORIGINAL),
+            str(RUTA_IMPUTED_FILTERED),
+        ],
+    }
 
 @app.post("/clean", response_model=CleanResponse)
 async def clean_endpoint(payload: CleanRequest) -> CleanResponse:
@@ -111,3 +177,14 @@ async def clean_endpoint(payload: CleanRequest) -> CleanResponse:
     cleaned = await run_in_threadpool(_clean_rows, raw_rows)
 
     return CleanResponse(rows=cleaned)
+
+@app.post("/impute-missing")
+async def impute_missing() -> dict:
+    """
+    Ejecuta el pipeline de imputación MICE
+    sobre el dataset completo.
+    """
+
+    result = await run_in_threadpool(_run_missing_pipeline)
+
+    return result
