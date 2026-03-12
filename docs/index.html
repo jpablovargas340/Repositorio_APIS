@@ -236,11 +236,11 @@
       <h2>📊 Análisis Exploratorio de Datos (EDA)</h2>
 
       <p>
-        Esta sección presenta los <strong>hallazgos principales</strong> del análisis exploratorio del dataset global de crisis financieras. Se examinaron <strong>3,864 observaciones país-año</strong> cubriendo <strong>142 países</strong> en el período <strong>1960-2024</strong>.
+        En esta sección mostramos en detalle cómo es nuestro dataset y qué información contiene. Analizamos <strong>3,864 registros información de países</strong> desde <strong>1960 hasta 2024</strong> provenientes de <strong>142 países diferentes</strong>.
       </p>
 
       <div class="alert alert-success">
-        <strong>✅ Dataset Completado:</strong> Imputación MICE exitosa. Variables completamente pobladas después del tratamiento.
+        <strong>✅ Estado del Dataset:</strong> Completamente procesado. Todos los datos faltantes fueron recuperados usando técnicas estadísticas avanzadas.
       </div>
 
       <!-- 1. Dimensiones del Dataset -->
@@ -330,41 +330,55 @@
         <strong>📌 Tratamiento:</strong> Se aplicó <strong>MICE (Multivariate Imputation by Chained Equations)</strong> preservando estructura panel del dataset. Después de imputación: <strong>0 valores faltantes</strong> en todas las variables.
       </div>
 
-      <!-- 3. Distribuciones de Imputaciones Múltiples -->
-      <h3>3️⃣ Imputaciones Múltiples MICE: Variabilidad por Variable</h3>
+      <!-- 3. Imputaciones Múltiples MICE -->
+      <h3>3️⃣ Recuperación de Datos Faltantes</h3>
       <p>
-        Se ejecutaron <strong>5 imputaciones independientes</strong> usando MICE para estimular variabilidad. Los gráficos muestran distribuciones de densidad superimpuestas, demostrando estabilidad y consistencia de imputación.
+        Algunos datos estaban incompletos (especialmente desempleo). Utilizamos una técnica estadística llamada <strong>MICE</strong> que es como un "predictor inteligente": observa los patrones del resto de los datos y completa los espacios en blanco de forma consistente y realista.
+      </p>
+      <p>
+        Los gráficos a continuación muestran cómo son las distribuciones de cada variable DESPUÉS de ser completadas. Las líneas superpuestas representan diferentes intentos del predictor (5 en total), y verás que son muy similares, lo que significa que nuestro procedimiento es confiable.
       </p>
 
       <div class="gallery">
         <div class="figure-item">
-          <img src="img/inflacion_hist.png" alt="Distribución Imputaciones - Inflación">
+          <img src="img/distribution_mice_inflation.png" alt="Distribución de Inflación Recuperada">
           <div class="figure-caption">
-            <h3>Inflación</h3>
-            <p>5 imputaciones muestran convergencia. Distribución sesgada por valores extremos históricos.</p>
+            <h3>📈 Inflación</h3>
+            <p><strong>¿Qué significa?</strong> Muestra cómo se distribuyen los valores de inflación después de recuperarlos. Ves que hay un pico grande alrededor del 0%, pero algunos países tienen inflaciones muy altas (derechas), como países que pasaron por crisis económicas graves.</p>
+            <p><strong>Para ti:</strong> Las 5 líneas de colores representan 5 intentos diferentes del predictor. Son casi idénticas, ¡eso es bueno! Significa que recuperamos los datos de forma consistente y confiable.</p>
           </div>
         </div>
+
         <div class="figure-item">
-          <img src="img/gdp_hist.png" alt="Distribución Imputaciones - GDP">
+          <img src="img/distribution_mice_gdp_growth.png" alt="Distribución de Crecimiento del PIB">
           <div class="figure-caption">
-            <h3>PIB Growth</h3>
-            <p>Distribución simétrica. Imputaciones estables alrededor de la media (3.8%).</p>
+            <h3>💰 Crecimiento del PIB</h3>
+            <p><strong>¿Qué significa?</strong> El PIB muestra cómo crece (o decrece) la economía de un país. La mayoría de valores están alrededor de 4% anual, pero hay algunos años donde fue negativo (crisis) o muy positivo (boom económico).</p>
+            <p><strong>Para ti:</strong> La forma es casi una campana normal, perfecto. Significa que nuestros datos recuperados tienen un patrón realista y natural.</p>
           </div>
         </div>
+
         <div class="figure-item">
-          <img src="img/inflacion_hist.png" alt="Distribución Imputaciones - Unemployment">
+          <img src="img/distribution_mice_unemployment.png" alt="Distribución de Desempleo">
           <div class="figure-caption">
-            <h3>Desempleo</h3>
-            <p>Sesgada a la derecha. Imputaciones concentradas en rango 0-20%.</p>
+            <h3>👥 Desempleo</h3>
+            <p><strong>¿Qué significa?</strong> El porcentaje de personas sin trabajo. Mayoría de países: 3-10%, pero algunos han tenido desempleo mucho más alto (hasta 68%) durante crisis graves.</p>
+            <p><strong>Para ti:</strong> Este era el dato más incompleto (46% faltante), pero nuestro predictor lo recuperó exitosamente. Las líneas similares = predicción consistente.</p>
           </div>
         </div>
+
         <div class="figure-item">
-          <img src="img/missing_data.png" alt="Distribución Imputaciones - Fed Rate">
+          <img src="img/distribution_mice_fed_funds_rate.png" alt="Distribución de Tasa de Fondos Fed">
           <div class="figure-caption">
-            <h3>Tasa Fed</h3>
-            <p>Bimodal con picos en períodos de tasas bajas (~0-2%) y altas (~4-6%).</p>
+            <h3>🏦 Tasa de Fondos Federales</h3>
+            <p><strong>¿Qué significa?</strong> La tasa de interés fijada por el Banco Central de USA. Típicamente ~5%, pero baja a 0% en crisis o sube cuando la economía se calienta demasiado.</p>
+            <p><strong>Para ti:</strong> Ves dos picos (bimodal), reflejando dos épocas: tasas altas (1980s-1990s) y tasas bajas (2000s). Muy realista.</p>
           </div>
         </div>
+      </div>
+
+      <div class="alert alert-info">
+        <strong>💡 Explicación Simple:</strong> MICE es como un "predictor inteligente" - observa los patrones de datos completos y "adivina" los faltantes de forma lógica. Que 5 intentos lleguen a conclusiones similares nos da confianza en que las predicciones son correctas. Resultado: <strong>0 datos faltantes</strong> en nuestro dataset final.
       </div>
 
       <!-- 4. Estadísticas Descriptivas -->
@@ -420,64 +434,38 @@
       </div>
 
       <!-- 4. Análisis de Correlación -->
-      <h3>5️⃣ Matriz de Correlación: Antes vs Después de Imputación</h3>
+      <h3>5️⃣ ¿Cómo se Relacionan Entre Sí Estas Variables?</h3>
       <p>
-        El análisis de correlación detecta relaciones lineales moderadas. La correlación más fuerte es entre <strong>GDP Growth y Unemployment</strong> (r = -0.22), consistente con la ley de Okun macroeconómica. Los heatmaps muestran estabilidad: las correlaciones se preservan después de MICE.
+        Este gráfico muestra si existe alguna relación entre las variables. Por ejemplo, ¿sube la inflación cuando sube el desempleo? ¿Baja el PIB cuando suben los tipos de interés? Los colores te indican:
       </p>
+      <ul>
+        <li><strong>🔴 Rojo oscuro</strong> = Fuerte relación positiva (suben juntas)</li>
+        <li><strong>🔵 Azul oscuro</strong> = Fuerte relación negativa (una sube, la otra baja)</li>
+        <li><strong>⚪ Blanco</strong> = Sin relación (no tienen conexión)</li>
+      </ul>
 
       <div class="figure-item" style="margin-bottom: 2rem;">
         <img src="img/correlation_heatmap.png" alt="Matriz de Correlación Completa" style="width: 100%; max-width: 1000px; height: auto;">
         <div class="figure-caption">
-          <h3>Heatmap Completo: Antes vs Después de Imputación MICE</h3>
-          <p><strong>Superior izq:</strong> Base original antes imputar | <strong>Superior der:</strong> Base original después imputar</p>
-          <p><strong>Inferior izq:</strong> Base filtrada antes imputar | <strong>Inferior der:</strong> Base filtrada después imputar</p>
-          <p>Correlación clave (Ley de Okun): GDP Growth ↔ Unemployment = -0.20</p>
+          <h3>📊 Las Cuatro Esquinas del Gráfico Explican qué Pasó</h3>
+          <p><strong>Arriba a la izquierda:</strong> Antes de completar los datos | <strong>Arriba a la derecha:</strong> Después de completarlos (Base Original)</p>
+          <p><strong>Abajo a la izquierda:</strong> Antes de completar (Base sin algunos países) | <strong>Abajo a la derecha:</strong> Después de completarlos (Base Filtrada)</p>
         </div>
       </div>
 
       <div class="card">
-        <h4>Matriz de Correlación Numérica (Base Original)</h4>
-        <table>
-          <thead>
-            <tr>
-              <th>Variable</th>
-              <th>inflation</th>
-              <th>gdp_growth</th>
-              <th>unemployment</th>
-              <th>fed_funds_rate</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><strong>inflation</strong></td>
-              <td>1.00</td>
-              <td>-0.07</td>
-              <td>0.05</td>
-              <td>0.04</td>
-            </tr>
-            <tr>
-              <td><strong>gdp_growth</strong></td>
-              <td>-0.07</td>
-              <td>1.00</td>
-              <td><strong>-0.20</strong></td>
-              <td>0.00</td>
-            </tr>
-            <tr>
-              <td><strong>unemployment</strong></td>
-              <td>0.05</td>
-              <td><strong>-0.20</strong></td>
-              <td>1.00</td>
-              <td>-0.08</td>
-            </tr>
-            <tr>
-              <td><strong>fed_funds_rate</strong></td>
-              <td>0.04</td>
-              <td>0.00</td>
-              <td>-0.08</td>
-              <td>1.00</td>
-            </tr>
-          </tbody>
-        </table>
+        <h4>🔍 Lo Más Importante que Encontramos</h4>
+        <ul>
+          <li><strong>GDP Growth ↔ Unemployment = -0.20</strong> (relación inversa moderada)</li>
+            <ul style="margin-top: 0.5rem;">
+              <li><em>En palabras simples:</em> Cuando la economía crece, baja el desempleo. Cuando enters crisis, sube el desempleo. Eso tiene lógica.</li>
+            </ul>
+          <li><strong>Inflation ↔ GDP Growth = -0.07</strong> (sin mucha relación)</li>
+            <ul style="margin-top: 0.5rem;">
+              <li><em>En palabras simples:</em> La inflación no parece conectada con el crecimiento. A veces sube inflación y crece la economía, otras veces no. Es más complicado.</li>
+            </ul>
+          <li><strong>Buena noticia:</strong> No hay conflictos graves entre variables. Todas las relaciones son débiles o moderadas. Esto es perfecto para análisis posteriores.</li>
+        </ul>
       </div>
 
       <!-- 6. Hallazgos Clave -->
