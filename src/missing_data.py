@@ -66,6 +66,57 @@ def run_mice_panel(
 
     return data_imputed, missing_mask
 
+def run_multiple_mice_panel(
+    data,
+    study_vars=None,
+    country_col="iso3",
+    time_col="year",
+    random_state=0,
+    max_iter=20,
+    n_imputations=5
+):
+    if study_vars is None:
+        study_vars = STUDY_VARS
+
+    data = data.copy()
+    missing_mask = data[study_vars].isnull()
+
+    country_dummies = pd.get_dummies(
+        data[country_col],
+        prefix=country_col,
+        drop_first=False
+    )
+
+    X = pd.concat(
+        [data[[time_col] + study_vars], country_dummies],
+        axis=1
+    )
+
+    imputed_datasets = []
+
+    for i in range(n_imputations):
+        imputer = IterativeImputer(
+            max_iter=max_iter,
+            random_state=random_state + i,
+            sample_posterior=True
+        )
+
+        X_imputed = pd.DataFrame(
+            imputer.fit_transform(X),
+            columns=X.columns,
+            index=X.index
+        )
+
+        data_imputed = data.copy()
+        data_imputed[study_vars] = X_imputed[study_vars]
+
+        if "unemployment" in study_vars:
+            data_imputed["unemployment"] = data_imputed["unemployment"].clip(lower=0)
+
+        data_imputed["imputation_id"] = i + 1
+        imputed_datasets.append(data_imputed)
+
+    return imputed_datasets, missing_mask
 
 def resumen_imputacion(
     original_df: pd.DataFrame,
