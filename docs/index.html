@@ -40,16 +40,16 @@
           <p>Observaciones País-Año</p>
         </div>
         <div class="stat-box">
-          <h3>1960-2024</h3>
-          <p>Cobertura Temporal (64 años)</p>
+          <h3>1960-2015</h3>
+          <p>Cobertura Temporal (56 años)</p>
         </div>
         <div class="stat-box">
-          <h3>69</h3>
-          <p>Países Analizados</p>
+          <h3>69 → 61</h3>
+          <p>Países (Original → Filtrado)</p>
         </div>
         <div class="stat-box">
           <h3>4</h3>
-          <p>Variables Macroeconómicas</p>
+          <p>Variables Macro (Inflación, PIB, Desempleo, Tasa Fed)</p>
         </div>
       </div>
       <div class="btn-group">
@@ -145,11 +145,11 @@
           </tr>
           <tr>
             <td><strong>Período Temporal</strong></td>
-            <td>1960 a 2024 (64 años continuos)</td>
+            <td>1960 a 2015 (56 años continuos)</td>
           </tr>
           <tr>
             <td><strong>Cobertura Geográfica</strong></td>
-            <td>69 países después de filtrado </td>
+            <td>69 países originales → 61 después de filtrado (8 eliminados por >50% datos faltantes)</td>
           </tr>
           <tr>
             <td><strong>Granularidad</strong></td>
@@ -157,7 +157,7 @@
           </tr>
           <tr>
             <td><strong>Variables Macroeconómicas</strong></td>
-            <td>Inflación, crecimiento PIB, desempleo, tasa de fondos federales</td>
+            <td>1. <strong>Inflación</strong> | 2. <strong>Crecimiento PIB</strong> | 3. <strong>Desempleo</strong> | 4. <strong>Tasa de Fondos Federales</strong></td>
           </tr>
           <tr>
             <td><strong>Indicadores de Crisis</strong></td>
@@ -236,7 +236,7 @@
       <h2>📊 Análisis Exploratorio de Datos (EDA)</h2>
 
       <p>
-        En esta sección mostramos en detalle cómo es nuestro dataset y qué información contiene. Analizamos <strong>3,864 registros información de países</strong> desde <strong>1960 hasta 2024</strong> provenientes de <strong>142 países diferentes</strong>.
+        En esta sección mostramos en detalle cómo es nuestro dataset y qué información contiene. Analizamos <strong>3,864 registros información de países</strong> desde <strong>1960 hasta 2015</strong> provenientes de <strong>69 países</strong> (reducidos a 61 después del filtrado).
       </p>
 
       <div class="alert alert-success">
@@ -246,7 +246,7 @@
       <!-- 1. Dimensiones del Dataset -->
       <h3>1️⃣ Dimensiones y Cobertura del Dataset</h3>
       <p>
-        El dataset cubre un período de <strong>64 años</strong> con estructura panel desequilibrada (no todos los países en todos los años).
+        El dataset cubre un período de <strong>56 años</strong> con estructura panel desequilibrada (no todos los países en todos los años).
       </p>
 
       <table>
