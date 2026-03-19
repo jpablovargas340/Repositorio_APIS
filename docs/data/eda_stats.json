@@ -1,0 +1,94 @@
+{
+  "n_obs_original": 3864,
+  "n_obs_filtered": 3416,
+  "year_min": 1960,
+  "year_max": 2015,
+  "n_years": 56,
+  "n_countries_original": 69,
+  "n_countries_filtered": 61,
+  "countries_removed_count": 8,
+  "countries_removed": [
+    "AGO",
+    "NIC",
+    "POL",
+    "PRK",
+    "ROU",
+    "RUS",
+    "TWN",
+    "ZWE"
+  ],
+  "study_vars": [
+    "inflation",
+    "gdp_growth",
+    "unemployment",
+    "fed_funds_rate"
+  ],
+  "missing_original_pct": {
+    "unemployment": 46.2474,
+    "inflation": 14.9327,
+    "gdp_growth": 7.7899,
+    "fed_funds_rate": 0.0
+  },
+  "missing_filtered_pct": {
+    "unemployment": 42.2424,
+    "inflation": 7.8747,
+    "gdp_growth": 2.1663,
+    "fed_funds_rate": 0.0
+  },
+  "missing_residual_pct": {
+    "inflation": 1.6393,
+    "unemployment": 1.6393,
+    "gdp_growth": 0.0,
+    "fed_funds_rate": 0.0
+  },
+  "summary_final": [
+    {
+      "variable": "inflation",
+      "mean_original": 22.73,
+      "mean_imputed": 19.2632,
+      "std_original": 270.3282,
+      "std_imputed": 55.5924,
+      "min_imputed": -100.0,
+      "max_imputed": 500.0,
+      "diff_mean": -3.4668,
+      "diff_std": -214.7359,
+      "base": "filtered_pooling"
+    },
+    {
+      "variable": "gdp_growth",
+      "mean_original": 3.9436,
+      "mean_imputed": 3.9901,
+      "std_original": 4.2549,
+      "std_imputed": 4.5872,
+      "min_imputed": -45.8448,
+      "max_imputed": 42.4104,
+      "diff_mean": 0.0465,
+      "diff_std": 0.3323,
+      "base": "filtered_pooling"
+    },
+    {
+      "variable": "unemployment",
+      "mean_original": 7.2894,
+      "mean_imputed": 10.5344,
+      "std_original": 4.641,
+      "std_imputed": 7.6438,
+      "min_imputed": 0.0,
+      "max_imputed": 40.0,
+      "diff_mean": 3.2451,
+      "diff_std": 3.0028,
+      "base": "filtered_pooling"
+    },
+    {
+      "variable": "fed_funds_rate",
+      "mean_original": 5.2555,
+      "mean_imputed": 5.2555,
+      "std_original": 3.5463,
+      "std_imputed": 3.5463,
+      "min_imputed": 0.09,
+      "max_imputed": 16.39,
+      "diff_mean": 0.0,
+      "diff_std": 0.0,
+      "base": "filtered_pooling"
+    }
+  ]
+}

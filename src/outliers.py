@@ -2,51 +2,104 @@ from __future__ import annotations
 
 import pandas as pd
 
+from src.missing_data import STUDY_VARS
 
-def limites_iqr(serie: pd.Series, k: float = 1.5) -> tuple[float, float]:
+
+def outliers_por_pais(
+    df: pd.DataFrame,
+    study_vars: list[str] = STUDY_VARS,
+    country_col: str = "iso3",
+    time_col: str = "year",
+) -> tuple[pd.DataFrame, pd.DataFrame]:
     """
-    Calcula límites inferior/superior usando IQR (Q1 - k*IQR, Q3 + k*IQR).
+    Detecta outliers por país y por variable usando criterio IQR dentro de cada país.
+
+    Retorna:
+    - detalle_outliers: observaciones outlier
+    - resumen_outliers: resumen por país y variable
     """
-    s = pd.to_numeric(serie, errors="coerce").dropna()
-    if s.empty:
-        return (float("nan"), float("nan"))
+    detalle = []
+    resumen = []
 
-    q1 = float(s.quantile(0.25))
-    q3 = float(s.quantile(0.75))
-    iqr = q3 - q1
-    return (q1 - k * iqr, q3 + k * iqr)
+    for var in study_vars:
+        for country, group in df[[country_col, time_col, var]].dropna(subset=[var]).groupby(country_col):
+            if group[var].shape[0] < 4:
+                continue
 
+            q1 = group[var].quantile(0.25)
+            q3 = group[var].quantile(0.75)
+            iqr = q3 - q1
 
-def recortar_iqr(df: pd.DataFrame, columna: str, k: float = 1.5) -> pd.DataFrame:
-    """
-    Recorta (clip) los valores de una columna usando límites IQR.
-    Función pura: no modifica df original.
-    """
-    df_copia = df.copy()
+            lower = q1 - 1.5 * iqr
+            upper = q3 + 1.5 * iqr
 
-    lo, hi = limites_iqr(df_copia[columna], k=k)
-    if pd.isna(lo) or pd.isna(hi):
-        return df_copia
+            tmp = group.copy()
+            tmp["lower_bound"] = lower
+            tmp["upper_bound"] = upper
+            tmp["outlier_flag"] = ((tmp[var] < lower) | (tmp[var] > upper))
 
-    df_copia[columna] = pd.to_numeric(df_copia[columna], errors="coerce").clip(lo, hi)
-    return df_copia
+            outliers = tmp[tmp["outlier_flag"]].copy()
 
+            if not outliers.empty:
+                outliers["variable"] = var
+                outliers = outliers.rename(columns={var: "valor"})
+                outliers["q1"] = q1
+                outliers["q3"] = q3
+                outliers["iqr"] = iqr
 
-def recortar_cuantiles(
-    df: pd.DataFrame, columna: str, q_inf: float = 0.01, q_sup: float = 0.99
-) -> pd.DataFrame:
-    """
-    Recorta (clip) valores usando cuantiles (winsor simple).
-    Recomendado para inflación si hay valores extremos muy altos.
-    Función pura.
-    """
-    df_copia = df.copy()
+                detalle.append(
+                    outliers[
+                        [
+                            country_col,
+                            time_col,
+                            "variable",
+                            "valor",
+                            "q1",
+                            "q3",
+                            "iqr",
+                            "lower_bound",
+                            "upper_bound",
+                        ]
+                    ]
+                )
 
-    s = pd.to_numeric(df_copia[columna], errors="coerce").dropna()
-    if s.empty:
-        return df_copia
+            resumen.append(
+                pd.DataFrame(
+                    {
+                        country_col: [country],
+                        "variable": [var],
+                        "n_outliers": [int(tmp["outlier_flag"].sum())],
+                        "n_obs": [int(tmp.shape[0])],
+                        "pct_outliers": [float(tmp["outlier_flag"].mean() * 100)],
+                    }
+                )
+            )
 
-    lo = float(s.quantile(q_inf))
-    hi = float(s.quantile(q_sup))
-    df_copia[columna] = pd.to_numeric(df_copia[columna], errors="coerce").clip(lo, hi)
-    return df_copia
+    detalle_outliers = (
+        pd.concat(detalle, ignore_index=True)
+        if detalle
+        else pd.DataFrame(
+            columns=[
+                country_col,
+                time_col,
+                "variable",
+                "valor",
+                "q1",
+                "q3",
+                "iqr",
+                "lower_bound",
+                "upper_bound",
+            ]
+        )
+    )
+
+    resumen_outliers = (
+        pd.concat(resumen, ignore_index=True)
+        if resumen
+        else pd.DataFrame(columns=[country_col, "variable", "n_outliers", "n_obs", "pct_outliers"])
+    )
+
+    resumen_outliers = resumen_outliers[resumen_outliers["n_outliers"] > 0].reset_index(drop=True)
+    detalle_outliers = detalle_outliers.sort_values([country_col, "variable", time_col]).reset_index(drop=True)
+
+    return detalle_outliers, resumen_outliers

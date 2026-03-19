@@ -107,11 +107,18 @@ def run_multiple_mice_panel(
             index=X.index
         )
 
-        data_imputed = data.copy()
-        data_imputed[study_vars] = X_imputed[study_vars]
+        # Restricciones económicas
+        if "inflation" in study_vars:
+            X_imputed["inflation"] = X_imputed["inflation"].clip(-100, 500)
+
+        if "gdp_growth" in study_vars:
+            X_imputed["gdp_growth"] = X_imputed["gdp_growth"].clip(-50, 50)
 
         if "unemployment" in study_vars:
-            data_imputed["unemployment"] = data_imputed["unemployment"].clip(lower=0)
+            X_imputed["unemployment"] = X_imputed["unemployment"].clip(0, 40)
+
+        data_imputed = data.copy()
+        data_imputed[study_vars] = X_imputed[study_vars]
 
         data_imputed["imputation_id"] = i + 1
         imputed_datasets.append(data_imputed)
@@ -144,36 +151,103 @@ def resumen_imputacion(
 
     return summary
 
+def run_multiple_mice_by_country(
+    data,
+    study_vars=None,
+    country_col="iso3",
+    time_col="year",
+    random_state=0,
+    max_iter=20,
+    n_imputations=5
+):
+    if study_vars is None:
+        study_vars = STUDY_VARS
 
-def outliers_por_pais(
-    df: pd.DataFrame,
-    study_vars: list[str] = STUDY_VARS,
-    country_col: str = "iso3",
+    data = data.copy()
+    all_imputations = []
+
+    countries = data[country_col].unique()
+
+    for i in range(n_imputations):
+        country_results = []
+
+        for country in countries:
+            df_c = data[data[country_col] == country].copy()
+
+            # variables con al menos 2 observaciones no nulas en ese país
+            usable_vars = [var for var in study_vars if df_c[var].notnull().sum() >= 2]
+
+            # si no hay variables suficientes, dejar el país tal cual
+            if len(usable_vars) == 0:
+                df_c["imputation_id"] = i + 1
+                country_results.append(df_c)
+                continue
+
+            X = df_c[[time_col] + usable_vars].copy()
+
+            imputer = IterativeImputer(
+                max_iter=max_iter,
+                random_state=random_state + i,
+                sample_posterior=True
+            )
+
+            X_imputed_array = imputer.fit_transform(X)
+
+            X_imputed = pd.DataFrame(
+                X_imputed_array,
+                columns=X.columns,
+                index=X.index
+            )
+
+            # Restricciones económicas
+            if "inflation" in usable_vars:
+                X_imputed["inflation"] = X_imputed["inflation"].clip(-100, 500)
+
+            if "gdp_growth" in usable_vars:
+                X_imputed["gdp_growth"] = X_imputed["gdp_growth"].clip(-50, 50)
+
+            if "unemployment" in usable_vars:
+                X_imputed["unemployment"] = X_imputed["unemployment"].clip(0, 40)
+
+            # solo reemplazar variables imputadas/usables
+            df_c[usable_vars] = X_imputed[usable_vars]
+            df_c["imputation_id"] = i + 1
+
+            country_results.append(df_c)
+
+        df_imputed = pd.concat(country_results, ignore_index=True)
+        all_imputations.append(df_imputed)
+
+    return all_imputations
+
+def promediar_imputaciones(
+    imputed_datasets: list[pd.DataFrame],
+    id_cols: list[str] = ["iso3", "year"],
 ) -> pd.DataFrame:
     """
-    Detecta outliers por país usando criterio IQR.
-    Solo diagnóstico: no modifica los datos.
+    Promedia múltiples imputaciones por fila identificada por id_cols.
+    Devuelve un único DataFrame consolidado.
     """
-    results = []
+    if not imputed_datasets:
+        raise ValueError("La lista de imputaciones está vacía.")
 
-    for var in study_vars:
-        q1 = df[var].quantile(0.25)
-        q3 = df[var].quantile(0.75)
-        iqr = q3 - q1
-        lower = q1 - 1.5 * iqr
-        upper = q3 + 1.5 * iqr
+    df_concat = pd.concat(imputed_datasets, ignore_index=True)
 
-        tmp = df.copy()
-        tmp["outlier_flag"] = ((tmp[var] < lower) | (tmp[var] > upper)).astype(int)
+    # columnas numéricas a promediar, excluyendo identificadores e imputation_id
+    numeric_cols = df_concat.select_dtypes(include="number").columns.tolist()
+    numeric_cols = [col for col in numeric_cols if col not in id_cols + ["imputation_id"]]
 
-        country_outliers = tmp.groupby(country_col)["outlier_flag"].agg(["sum", "count"]).reset_index()
-        country_outliers["variable"] = var
-        country_outliers["pct_outliers"] = (country_outliers["sum"] / country_outliers["count"]) * 100
-        country_outliers = country_outliers.rename(columns={"sum": "n_outliers", "count": "n_obs"})
+    # promedio de variables numéricas imputadas
+    df_mean = (
+        df_concat.groupby(id_cols, as_index=False)[numeric_cols]
+        .mean()
+    )
 
-        results.append(country_outliers)
+    # conservar columnas no numéricas + identificadores desde la primera imputación
+    base_cols = [col for col in imputed_datasets[0].columns if col not in numeric_cols + ["imputation_id"]]
+    base_unique = imputed_datasets[0][base_cols].drop_duplicates(subset=id_cols)
 
-    final_table = pd.concat(results, ignore_index=True)
-    final_table = final_table[final_table["n_outliers"] > 0]
+    df_final = base_unique.merge(df_mean, on=id_cols, how="inner")
+    df_final["year"] = df_final["year"].astype("Int64")
 
-    return final_table.sort_values(by=[country_col, "variable"]).reset_index(drop=True)
+    return df_final

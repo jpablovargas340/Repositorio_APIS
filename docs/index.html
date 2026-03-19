@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Análisis y modelado de crisis financieras globales con machine learning y estadística avanzada">
-  <meta name="keywords" content="crisis financieras, análisis macroeconomómico, python, datos, machine learning">
+  <meta name="keywords" content="crisis financieras, análisis macroeconómico, python, datos, machine learning">
   <meta name="author" content="Juan Pablo Vargas, Edward Mora">
   <title>Global Crisis Analyzer | Análisis de Crisis Financieras Globales</title>
   <link rel="stylesheet" href="css/style.css">
@@ -36,8 +36,8 @@
       <p>Análisis exhaustivo de crisis financieras globales usando ciencia de datos, estadística avanzada y APIs documentadas</p>
       <div class="hero-stats">
         <div class="stat-box">
-          <h3>3,864</h3>
-          <p>Observaciones País-Año</p>
+          <h3>3,864 → 3,416</h3>
+          <p>Observaciones (Original → Filtrada)</p>
         </div>
         <div class="stat-box">
           <h3>1960-2015</h3>
@@ -49,13 +49,13 @@
         </div>
         <div class="stat-box">
           <h3>4</h3>
-          <p>Variables Macro (Inflación, PIB, Desempleo, Tasa Fed)</p>
+          <p>Variables Macro de Estudio</p>
         </div>
       </div>
       <div class="btn-group">
         <a href="#eda" class="btn btn-primary">Explorar EDA</a>
         <a href="#apis" class="btn btn-secondary">Documentación API</a>
-        <a href="https://github.com" class="btn btn-outline">GitHub</a>
+        <a href="https://github.com/jpablovargas340/Repositorio_APIS" class="btn btn-outline">GitHub</a>
       </div>
     </div>
   </section>
@@ -66,7 +66,7 @@
   <section id="about" class="section">
     <div class="container">
       <h2>📋 Acerca del Proyecto</h2>
-      
+
       <div class="toc">
         <strong>Contenido de esta sección:</strong>
         <ul>
@@ -78,16 +78,16 @@
 
       <h3 id="context">Contexto y Motivación</h3>
       <p>
-        Las crisis financieras representan fenómenos complejos que alteran significativamente la estabilidad económica global. Desde la crisis de deuda soberana de los años 80 hasta la pandemia de COVID-19, estos eventos han dejado cicatrices duraderas en economías desarrolladas y emergentes.
+        Las crisis financieras representan fenómenos complejos que alteran significativamente la estabilidad económica global. Desde las crisis de deuda soberana de los años 80 hasta episodios recientes de alta volatilidad macroeconómica, estos eventos han dejado efectos persistentes sobre inflación, crecimiento, empleo y estabilidad monetaria.
       </p>
       <p>
         <strong>Este proyecto</strong> combina:
       </p>
       <ul>
         <li>📊 <strong>Ingeniería de Datos:</strong> Pipeline reproducible de limpieza, validación y enriquecimiento</li>
-        <li>📈 <strong>Estadística Avanzada:</strong> Imputación MICE, análisis de outliers, correlaciones panel</li>
-        <li>💰 <strong>Perspectiva Financiera:</strong> Modelado de indicadores macroeconómicos y detección de crisis</li>
-        <li>🔬 <strong>Buenas Prácticas:</strong> Tipado estricto (Pydantic), testing automatizado, arquitectura modular</li>
+        <li>📈 <strong>Estadística Aplicada:</strong> imputación múltiple por país, análisis de outliers y validación de correlaciones</li>
+        <li>💰 <strong>Perspectiva Financiera:</strong> modelado de indicadores macroeconómicos y monitoreo de señales de crisis</li>
+        <li>🔬 <strong>Buenas Prácticas:</strong> tipado estricto (Pydantic), testing automatizado y arquitectura modular</li>
       </ul>
 
       <h3 id="objectives">Objetivos Principales</h3>
@@ -100,14 +100,14 @@
         </div>
         <div class="card feature-card">
           <div class="feature-card-icon">⚙️</div>
-          <h4>Tratamiento de Outliers</h4>
-          <p>Manejo sistemático de valores extremos (hiperinflación, crashes) mediante recorte por cuantiles e IQR.</p>
+          <h4>Diagnóstico de Outliers</h4>
+          <p>Identificación de valores extremos por país y variable usando criterio IQR sin eliminar automáticamente datos plausibles.</p>
           <span class="badge badge-secondary">Estadística Robusta</span>
         </div>
         <div class="card feature-card">
           <div class="feature-card-icon">📑</div>
           <h4>Análisis Exploratorio</h4>
-          <p>EDA documentado con visualizaciones profesionales, correlaciones y validaciones de supuestos.</p>
+          <p>EDA documentado con visualizaciones profesionales, correlaciones panel y validaciones de supuestos.</p>
           <span class="badge badge-success">Data Quality</span>
         </div>
         <div class="card feature-card">
@@ -125,7 +125,7 @@
         <div class="card feature-card">
           <div class="feature-card-icon">📊</div>
           <h4>Imputación MICE</h4>
-          <p>Recuperación de datos faltantes usando IterativeImputer con estructura panel (países + años).</p>
+          <p>Recuperación de datos faltantes usando IterativeImputer con Bayesian Ridge, estructura temporal y pooling por promedio.</p>
           <span class="badge badge-success">Scikit-learn</span>
         </div>
       </div>
@@ -141,7 +141,7 @@
         <tbody>
           <tr>
             <td><strong>Observaciones</strong></td>
-            <td>3,864 registros (panel país-año desequilibrado)</td>
+            <td>3,864 registros en la base original; 3,416 en la base filtrada utilizada para imputación final</td>
           </tr>
           <tr>
             <td><strong>Período Temporal</strong></td>
@@ -149,11 +149,11 @@
           </tr>
           <tr>
             <td><strong>Cobertura Geográfica</strong></td>
-            <td>69 países originales → 61 después de filtrado (8 eliminados por >50% datos faltantes)</td>
+            <td>69 países originales → 61 después del filtrado (8 eliminados por exceso de faltantes)</td>
           </tr>
           <tr>
             <td><strong>Granularidad</strong></td>
-            <td>Anual (datos desequilibrados: no todos los países en todos los años)</td>
+            <td>Anual (panel país-año con cobertura desigual entre variables)</td>
           </tr>
           <tr>
             <td><strong>Variables Macroeconómicas</strong></td>
@@ -161,11 +161,11 @@
           </tr>
           <tr>
             <td><strong>Indicadores de Crisis</strong></td>
-            <td>Binarias: banking, currency, debt, any crisis (contemporáneas y rezagadas)</td>
+            <td>Binarias: banking, currency, debt y crisis_any, además de variables adelantadas a 12 meses</td>
           </tr>
           <tr>
             <td><strong>Calidad de Datos</strong></td>
-            <td>Imputación MICE aplicada: 0 valores faltantes post-procesamiento</td>
+            <td>Imputación múltiple por país con pooling por promedio; missing residual &lt; 2% en variables de estudio</td>
           </tr>
         </tbody>
       </table>
@@ -221,7 +221,7 @@
           <li>✅ <strong>Funciones Puras:</strong> Sin mutación de inputs, determinísticas</li>
           <li>✅ <strong>Modularización:</strong> Código separado por responsabilidad</li>
           <li>✅ <strong>Tipado Estricto:</strong> Type hints en todos los niveles</li>
-          <li>✅ <strong>Reproducibilidad:</strong> Random seeds controlados, logging completo</li>
+          <li>✅ <strong>Reproducibilidad:</strong> Random seeds controlados y pipeline trazable</li>
           <li>✅ <strong>Validación:</strong> Pydantic antes de procesar datos</li>
         </ul>
       </div>
@@ -236,17 +236,17 @@
       <h2>📊 Análisis Exploratorio de Datos (EDA)</h2>
 
       <p>
-        En esta sección mostramos en detalle cómo es nuestro dataset y qué información contiene. Analizamos <strong>3,864 registros información de países</strong> desde <strong>1960 hasta 2015</strong> provenientes de <strong>69 países</strong> (reducidos a 61 después del filtrado).
+        En esta sección mostramos la estructura del dataset y el pipeline de imputación final. Partimos de <strong>3,864 observaciones país-año</strong> entre <strong>1960 y 2015</strong> para <strong>69 países</strong>, y trabajamos metodológicamente con una <strong>base filtrada de 3,416 observaciones y 61 países</strong> después de remover países con exceso de datos faltantes.
       </p>
 
       <div class="alert alert-success">
-        <strong>✅ Estado del Dataset:</strong> Completamente procesado. Todos los datos faltantes fueron recuperados usando técnicas estadísticas avanzadas.
+        <strong>✅ Estado del Dataset:</strong> Base filtrada e imputada mediante MICE por país con pooling por promedio. El missing residual final es inferior al 2% en las variables de estudio.
       </div>
 
       <!-- 1. Dimensiones del Dataset -->
       <h3>1️⃣ Dimensiones y Cobertura del Dataset</h3>
       <p>
-        El dataset cubre un período de <strong>56 años</strong> con estructura panel desequilibrada (no todos los países en todos los años).
+        El dataset cubre un período de <strong>56 años</strong> con estructura panel histórica y cobertura desigual entre países y variables.
       </p>
 
       <table>
@@ -265,12 +265,12 @@
           </tr>
           <tr>
             <td><strong>Período Temporal</strong></td>
-            <td colspan="2">1960-2024 (64 años)</td>
+            <td colspan="2">1960-2015 (56 años)</td>
           </tr>
           <tr>
             <td><strong>Países</strong></td>
-            <td>150</td>
-            <td>142 (8 eliminados por exceso de missing)</td>
+            <td>69</td>
+            <td>61 (8 eliminados por exceso de missing)</td>
           </tr>
           <tr>
             <td><strong>Variables Macro</strong></td>
@@ -278,12 +278,12 @@
           </tr>
         </tbody>
       </table>
-      <p><em>*Base filtrada: elimina 8 países con >50% datos faltantes</em></p>
+      <p><em>*Base filtrada: elimina países con más de 50% de faltantes en al menos 2 variables de estudio</em></p>
 
       <!-- 2. Calidad de Datos: Valores Faltantes -->
       <h3>2️⃣ Diagnóstico de Datos Faltantes (Missing Data)</h3>
       <p>
-        El análisis de completitud reveló heterogeneidad en la cobertura de variables. <strong>Unemployment</strong> es la variable más escasa (~46% faltante), mientras que <strong>fed_funds_rate</strong> tiene cobertura completa.
+        El análisis de completitud mostró heterogeneidad importante entre variables. <strong>Unemployment</strong> fue la variable más incompleta, mientras que <strong>fed_funds_rate</strong> tuvo cobertura completa.
       </p>
 
       <div class="card">
@@ -292,60 +292,55 @@
           <thead>
             <tr>
               <th>Variable</th>
-              <th>Faltantes (Original)</th>
-              <th>Faltantes (Filtrada)</th>
-              <th>% Cobertura</th>
+              <th>% Missing (Original)</th>
+              <th>% Missing (Filtrada)</th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td><strong>inflation</strong></td>
-              <td>577</td>
-              <td>269</td>
-              <td>92.9%</td>
+              <td>14.93%</td>
+              <td>7.87%</td>
             </tr>
             <tr>
               <td><strong>gdp_growth</strong></td>
-              <td>301</td>
-              <td>74</td>
-              <td>97.8%</td>
+              <td>7.79%</td>
+              <td>2.17%</td>
             </tr>
             <tr>
               <td><strong>unemployment</strong></td>
-              <td>1,787</td>
-              <td>1,443</td>
-              <td>54.0%</td>
+              <td>46.25%</td>
+              <td>42.24%</td>
             </tr>
             <tr>
               <td><strong>fed_funds_rate</strong></td>
-              <td>0</td>
-              <td>0</td>
-              <td>100%</td>
+              <td>0.00%</td>
+              <td>0.00%</td>
             </tr>
           </tbody>
         </table>
       </div>
 
       <div class="alert alert-info">
-        <strong>📌 Tratamiento:</strong> Se aplicó <strong>MICE (Multivariate Imputation by Chained Equations)</strong> preservando estructura panel del dataset. Después de imputación: <strong>0 valores faltantes</strong> en todas las variables.
+        <strong>📌 Tratamiento:</strong> Se aplicó <strong>MICE por país</strong> usando <strong>IterativeImputer con Bayesian Ridge</strong> e incorporando <strong>YEAR</strong> como predictor temporal. Las imputaciones múltiples se consolidaron mediante <strong>pooling por promedio</strong>. El missing residual final fue <strong>&lt; 2%</strong> en inflación y desempleo, y <strong>0%</strong> en crecimiento del PIB y tasa Fed.
       </div>
 
-      <!-- 3. Imputaciones Múltiples MICE -->
+      <!-- 3. Imputación y comparación de distribuciones -->
       <h3>3️⃣ Recuperación de Datos Faltantes</h3>
       <p>
-        Algunos datos estaban incompletos (especialmente desempleo). Utilizamos una técnica estadística llamada <strong>MICE</strong> que es como un "predictor inteligente": observa los patrones del resto de los datos y completa los espacios en blanco de forma consistente y realista.
+        Algunos datos estaban incompletos, especialmente en desempleo e inflación para ciertos países y períodos tempranos. Utilizamos una estrategia de <strong>imputación múltiple por país</strong> que aprovecha la estructura temporal interna de cada economía y evita mezclar dinámicas nacionales muy diferentes.
       </p>
       <p>
-        Los gráficos a continuación muestran cómo son las distribuciones de cada variable DESPUÉS de ser completadas. Las líneas superpuestas representan diferentes intentos del predictor (5 en total), y verás que son muy similares, lo que significa que nuestro procedimiento es confiable.
+        Los gráficos a continuación comparan la distribución de cada variable <strong>antes de imputar</strong> en la base filtrada y <strong>después del pooling final</strong>. Esto permite verificar si la imputación preserva razonablemente la forma general de los datos sin introducir valores económicamente absurdos.
       </p>
 
       <div class="gallery">
         <div class="figure-item">
-          <img src="img/distribution_mice_inflation.png" alt="Distribución de Inflación Recuperada">
+          <img src="img/distribution_mice_inflation.png" alt="Distribución de Inflación">
           <div class="figure-caption">
             <h3>📈 Inflación</h3>
-            <p><strong>¿Qué significa?</strong> Muestra cómo se distribuyen los valores de inflación después de recuperarlos. Ves que hay un pico grande alrededor del 0%, pero algunos países tienen inflaciones muy altas (derechas), como países que pasaron por crisis económicas graves.</p>
-            <p><strong>Para ti:</strong> Las 5 líneas de colores representan 5 intentos diferentes del predictor. Son casi idénticas, ¡eso es bueno! Significa que recuperamos los datos de forma consistente y confiable.</p>
+            <p><strong>¿Qué significa?</strong> La inflación presenta una distribución muy asimétrica, con episodios extremos asociados a crisis macroeconómicas severas.</p>
+            <p><strong>Para ti:</strong> La comparación entre la distribución observada y la distribución después del pooling muestra que la imputación mantiene una forma razonable, evitando los extremos irreales que aparecían en versiones iniciales del procedimiento.</p>
           </div>
         </div>
 
@@ -353,8 +348,8 @@
           <img src="img/distribution_mice_gdp_growth.png" alt="Distribución de Crecimiento del PIB">
           <div class="figure-caption">
             <h3>💰 Crecimiento del PIB</h3>
-            <p><strong>¿Qué significa?</strong> El PIB muestra cómo crece (o decrece) la economía de un país. La mayoría de valores están alrededor de 4% anual, pero hay algunos años donde fue negativo (crisis) o muy positivo (boom económico).</p>
-            <p><strong>Para ti:</strong> La forma es casi una campana normal, perfecto. Significa que nuestros datos recuperados tienen un patrón realista y natural.</p>
+            <p><strong>¿Qué significa?</strong> El crecimiento del PIB se concentra en valores moderados, con episodios recesivos y expansiones fuertes en algunos contextos.</p>
+            <p><strong>Para ti:</strong> La imputación conserva razonablemente la distribución general y no introduce desplazamientos importantes en media o rango.</p>
           </div>
         </div>
 
@@ -362,8 +357,8 @@
           <img src="img/distribution_mice_unemployment.png" alt="Distribución de Desempleo">
           <div class="figure-caption">
             <h3>👥 Desempleo</h3>
-            <p><strong>¿Qué significa?</strong> El porcentaje de personas sin trabajo. Mayoría de países: 3-10%, pero algunos han tenido desempleo mucho más alto (hasta 68%) durante crisis graves.</p>
-            <p><strong>Para ti:</strong> Este era el dato más incompleto (46% faltante), pero nuestro predictor lo recuperó exitosamente. Las líneas similares = predicción consistente.</p>
+            <p><strong>¿Qué significa?</strong> El desempleo es la variable más incompleta del conjunto y también una de las más difíciles de reconstruir por su menor estructura de correlación con otras variables.</p>
+            <p><strong>Para ti:</strong> Esta era la variable más incompleta del dataset. Por eso, aunque la imputación mejora la cobertura, sigue siendo la variable con mayor incertidumbre relativa dentro del proceso.</p>
           </div>
         </div>
 
@@ -371,166 +366,159 @@
           <img src="img/distribution_mice_fed_funds_rate.png" alt="Distribución de Tasa de Fondos Fed">
           <div class="figure-caption">
             <h3>🏦 Tasa de Fondos Federales</h3>
-            <p><strong>¿Qué significa?</strong> La tasa de interés fijada por el Banco Central de USA. Típicamente ~5%, pero baja a 0% en crisis o sube cuando la economía se calienta demasiado.</p>
-            <p><strong>Para ti:</strong> Ves dos picos (bimodal), reflejando dos épocas: tasas altas (1980s-1990s) y tasas bajas (2000s). Muy realista.</p>
+            <p><strong>¿Qué significa?</strong> La tasa de referencia de la Reserva Federal refleja distintos regímenes monetarios a lo largo del período.</p>
+            <p><strong>Para ti:</strong> Como esta variable no presentaba faltantes, sirve como referencia de estabilidad y control dentro del proceso de análisis.</p>
           </div>
         </div>
       </div>
 
       <div class="alert alert-info">
-        <strong>💡 Explicación Simple:</strong> MICE es como un "predictor inteligente" - observa los patrones de datos completos y "adivina" los faltantes de forma lógica. Que 5 intentos lleguen a conclusiones similares nos da confianza en que las predicciones son correctas. Resultado: <strong>0 datos faltantes</strong> en nuestro dataset final.
+        <strong>💡 Explicación Simple:</strong> En vez de escoger una sola imputación “porque sí”, generamos varias imputaciones, las consolidamos con pooling por promedio y comparamos la distribución final contra la observada antes de imputar.
       </div>
 
       <!-- 4. Estadísticas Descriptivas -->
-      <h3>4️⃣ Estadísticas Descriptivas Post-Imputación</h3>
+      <h3>4️⃣ Resumen Estadístico Post-Imputación</h3>
       <p>
-        Este resumen muestra el comportamiento de las variables macroeconómicas después de la imputación MICE. Nótese la alta variabilidad en inflación (reflejando episodios de hiperinflación en algunas economías) y la volatilidad en desempleo.
+        El resumen siguiente compara medias y desviaciones estándar entre la base filtrada original y la base final después de imputación y pooling.
       </p>
 
       <div class="card">
-        <h4>Estadísticas Base Original (después de MICE)</h4>
+        <h4>Resumen de Imputación Final (Base Filtrada + Pooling)</h4>
         <table>
           <thead>
             <tr>
               <th>Variable</th>
-              <th>Media</th>
-              <th>Desv. Est.</th>
-              <th>Min.</th>
-              <th>Max.</th>
+              <th>Media Original</th>
+              <th>Media Final</th>
+              <th>Desv. Est. Original</th>
+              <th>Desv. Est. Final</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td><strong>inflation</strong> (%)</td>
-              <td>34.2</td>
-              <td>381.3</td>
-              <td>-1978.6*</td>
-              <td>11749.6*</td>
+              <td><strong>inflation</strong></td>
+              <td>22.73</td>
+              <td>19.63</td>
+              <td>270.33</td>
+              <td>73.92</td>
             </tr>
             <tr>
-              <td><strong>gdp_growth</strong> (%)</td>
-              <td>3.8</td>
-              <td>5.2</td>
-              <td>-36.4</td>
-              <td>42.9</td>
+              <td><strong>gdp_growth</strong></td>
+              <td>3.94</td>
+              <td>3.99</td>
+              <td>4.25</td>
+              <td>6.03</td>
             </tr>
             <tr>
-              <td><strong>unemployment</strong> (%)</td>
-              <td>8.9</td>
-              <td>9.3</td>
-              <td>0.0</td>
-              <td>68.1</td>
+              <td><strong>unemployment</strong></td>
+              <td>7.29</td>
+              <td>10.33</td>
+              <td>4.64</td>
+              <td>12.17</td>
             </tr>
             <tr>
-              <td><strong>fed_funds_rate</strong> (%)</td>
-              <td>5.3</td>
-              <td>3.5</td>
-              <td>0.09</td>
-              <td>16.4</td>
+              <td><strong>fed_funds_rate</strong></td>
+              <td>5.26</td>
+              <td>5.26</td>
+              <td>3.55</td>
+              <td>3.55</td>
             </tr>
           </tbody>
         </table>
-        <p><em>*Outliers originales antes de tratamiento. Recomendación: Winsorización para modelado robusto</em></p>
+        <p><em>La variable con mayor incertidumbre post-imputación es unemployment, debido a su alta proporción de faltantes y menor estructura de correlación.</em></p>
       </div>
 
-      <!-- 4. Análisis de Correlación -->
+      <!-- 5. Análisis de Correlación -->
       <h3>5️⃣ ¿Cómo se Relacionan Entre Sí Estas Variables?</h3>
       <p>
-        Este gráfico muestra si existe alguna relación entre las variables. Por ejemplo, ¿sube la inflación cuando sube el desempleo? ¿Baja el PIB cuando suben los tipos de interés? Los colores te indican:
+        El mapa de calor siguiente compara las correlaciones entre las variables antes de imputar y después del pooling final.
       </p>
       <ul>
-        <li><strong>🔴 Rojo oscuro</strong> = Fuerte relación positiva (suben juntas)</li>
-        <li><strong>🔵 Azul oscuro</strong> = Fuerte relación negativa (una sube, la otra baja)</li>
-        <li><strong>⚪ Blanco</strong> = Sin relación (no tienen conexión)</li>
+        <li><strong>🔴 Rojo oscuro</strong> = relación positiva fuerte</li>
+        <li><strong>🔵 Azul oscuro</strong> = relación negativa fuerte</li>
+        <li><strong>⚪ Blanco</strong> = relación débil o cercana a cero</li>
       </ul>
 
       <div class="figure-item" style="margin-bottom: 2rem;">
-        <img src="img/correlation_heatmap.png" alt="Matriz de Correlación Completa" style="width: 100%; max-width: 1000px; height: auto;">
+        <img src="img/correlation_heatmap.png" alt="Matriz de Correlación" style="width: 100%; max-width: 1000px; height: auto;">
         <div class="figure-caption">
-          <h3>📊 Las Cuatro Esquinas del Gráfico Explican qué Pasó</h3>
-          <p><strong>Arriba a la izquierda:</strong> Antes de completar los datos | <strong>Arriba a la derecha:</strong> Después de completarlos (Base Original)</p>
-          <p><strong>Abajo a la izquierda:</strong> Antes de completar (Base sin algunos países) | <strong>Abajo a la derecha:</strong> Después de completarlos (Base Filtrada)</p>
+          <h3>📊 Antes vs Después de Imputar</h3>
+          <p><strong>Izquierda:</strong> correlaciones en la base filtrada antes de imputar | <strong>Derecha:</strong> correlaciones después de la imputación final con pooling.</p>
         </div>
       </div>
 
       <div class="card">
         <h4>🔍 Lo Más Importante que Encontramos</h4>
         <ul>
-          <li><strong>GDP Growth ↔ Unemployment = -0.20</strong> (relación inversa moderada)</li>
-            <ul style="margin-top: 0.5rem;">
-              <li><em>En palabras simples:</em> Cuando la economía crece, baja el desempleo. Cuando enters crisis, sube el desempleo. Eso tiene lógica.</li>
-            </ul>
-          <li><strong>Inflation ↔ GDP Growth = -0.07</strong> (sin mucha relación)</li>
-            <ul style="margin-top: 0.5rem;">
-              <li><em>En palabras simples:</em> La inflación no parece conectada con el crecimiento. A veces sube inflación y crece la economía, otras veces no. Es más complicado.</li>
-            </ul>
-          <li><strong>Buena noticia:</strong> No hay conflictos graves entre variables. Todas las relaciones son débiles o moderadas. Esto es perfecto para análisis posteriores.</li>
+          <li><strong>GDP Growth ↔ Unemployment ≈ -0.20</strong>: se observa una relación inversa moderada, coherente con la intuición macroeconómica.</li>
+          <li><strong>Inflation ↔ GDP Growth ≈ débil</strong>: la inflación no muestra una asociación lineal fuerte con el crecimiento en la base filtrada.</li>
+          <li><strong>Buena noticia:</strong> la imputación no destruye la estructura general de correlaciones, lo que apoya la coherencia del procedimiento.</li>
         </ul>
       </div>
 
       <!-- 6. Hallazgos Clave -->
       <h3>6️⃣ Hallazgos Clave del EDA</h3>
-      
+
       <div class="card-grid">
         <div class="card feature-card">
           <div class="feature-card-icon">📉</div>
-          <h4>GDP-Desempleo: Ley de Okun</h4>
-          <p>Correlación de <strong>r = -0.20</strong> confirma la relación inversa clásica: cuando crece el PIB, baja el desempleo.</p>
-          <span class="badge badge-primary">Teoría Макро</span>
+          <h4>GDP-Desempleo: Relación Inversa</h4>
+          <p>La relación negativa entre crecimiento y desempleo es consistente con la intuición macroeconómica general.</p>
+          <span class="badge badge-primary">Teoría Macro</span>
         </div>
 
         <div class="card feature-card">
           <div class="feature-card-icon">📊</div>
           <h4>Inflación: Alta Variabilidad</h4>
-          <p>Desviación estándar de <strong>381.3%</strong> refleja crises hiperinflacionarias (Zimbabwe, Argentina, etc).</p>
-          <span class="badge badge-danger">Outliers Severos</span>
+          <p>La inflación sigue siendo la variable con mayor dispersión, reflejando episodios extremos históricamente plausibles.</p>
+          <span class="badge badge-danger">Alta Volatilidad</span>
         </div>
 
         <div class="card feature-card">
           <div class="feature-card-icon">✅</div>
-          <h4>Imputación MICE: Éxito</h4>
-          <p>Después de MICE: <strong>0 valores faltantes</strong>. Estructura panel preservada (estimadores insesgados).</p>
-          <span class="badge badge-success">Completo</span>
+          <h4>Imputación Estable</h4>
+          <p>La imputación múltiple por país con pooling redujo el missing residual a <strong>&lt; 2%</strong> en las variables más difíciles, preservando la estructura panel.</p>
+          <span class="badge badge-success">Imputación Estable</span>
         </div>
 
         <div class="card feature-card">
           <div class="feature-card-icon">🎯</div>
-          <h4>Cobertura Desigual</h4>
-          <p><strong>Unemployment</strong> es la variable escasa (54% cobertura original). Requiere imputación estadística.</p>
-          <span class="badge badge-warning">46% Missing</span>
+          <h4>Desempleo: Variable Más Incierta</h4>
+          <p><strong>Unemployment</strong> sigue siendo la variable más exigente por su alta proporción de faltantes y menor soporte correlacional.</p>
+          <span class="badge badge-warning">Alta Incertidumbre</span>
         </div>
 
         <div class="card feature-card">
           <div class="feature-card-icon">🌍</div>
-          <h4>Panel Desequilibrado</h4>
-          <p>No todos los 142 países tienen datos en todos los 64 años. Esperado en datos macroeconómicos históricos.</p>
-          <span class="badge badge-info">Realista</span>
+          <h4>Panel Histórico Filtrado</h4>
+          <p>La base filtrada conserva <strong>61 países</strong> entre <strong>1960 y 2015</strong>, lo que mejora la estabilidad de la imputación sin perder el carácter internacional del análisis.</p>
+          <span class="badge badge-info">Panel Filtrado</span>
         </div>
 
         <div class="card feature-card">
           <div class="feature-card-icon">💡</div>
           <h4>Relaciones Débiles</h4>
-          <p>Inflación y GDP sin correlación fuerte (r = -0.07), sugiriendo relaciones complejas en contextos macroeconómicos variables.</p>
-          <span class="badge badge-secondary">No Lineal</span>
+          <p>La baja correlación entre varias variables sugiere que la estructura temporal por país es más informativa que la dependencia cruzada pura.</p>
+          <span class="badge badge-secondary">Dependencia Moderada</span>
         </div>
       </div>
 
       <!-- 7. Recomendaciones Técnicas -->
       <h3>7️⃣ Recomendaciones Analíticas</h3>
-      
+
       <div class="alert alert-info">
         <strong>📌 Para Análisis Subsecuentes:</strong>
         <ul>
-          <li><strong>Outliers:</strong> Aplicar Winsorización por cuantiles (q=0.01, 0.99) antes de modelado</li>
-          <li><strong>Panel Desequilibrado:</strong> Usar regresión efectos fijos con clustering por país</li>
-          <li><strong>Series Temporales:</strong> Considerar ARIMA/VAR para capturar dinámicas autocorrelacionadas</li>
-          <li><strong>Crisis Detection:</strong> Variables binarias desbalanceadas → usar class_weight='balanced' en clasificadores</li>
-          <li><strong>Validación:</strong> Usar k-fold estratificado por país-período para evitar data leakage temporal</li>
+          <li><strong>Outliers:</strong> Mantener monitoreo por país y variable; no eliminar automáticamente valores extremos económicamente plausibles.</li>
+          <li><strong>Panel:</strong> Usar especificaciones que respeten la estructura país-año y eviten mezclar dinámicas heterogéneas.</li>
+          <li><strong>Series Temporales:</strong> Considerar incorporación de rezagos por país en futuras versiones del pipeline de imputación o modelado.</li>
+          <li><strong>Crisis Detection:</strong> Las variables binarias están desbalanceadas; conviene usar estrategias robustas al desbalance.</li>
+          <li><strong>Validación:</strong> Evitar data leakage temporal y geográfico al diseñar particiones de entrenamiento y prueba.</li>
         </ul>
       </div>
 
       <div class="alert alert-success">
-        <strong>🎯 Conclusión EDA:</strong> Dataset apto para análisis econométrico y modelado predictivo. Calidad mejorada post-MICE. Limitaciones conocidas documentadas. Listo para modelado de crisis financieras.
+        <strong>🎯 Conclusión EDA:</strong> La base filtrada e imputada es apta para análisis econométrico, exploración panel y posterior integración con APIs. Las limitaciones de incertidumbre residual están identificadas y documentadas.
       </div>
     </div>
   </section>
@@ -543,7 +531,7 @@
       <h2>🌐 Documentación de APIs</h2>
 
       <p>
-        La API REST está construida con <strong>FastAPI</strong> (ASGI) y <strong>Pydantic 2.0</strong>. Proporciona validación estricta de tipos, documentación automática (Swagger UI, ReDoc) y manejo robusto de errores.
+        La API REST está construida con <strong>FastAPI</strong> y <strong>Pydantic 2.0</strong>. Proporciona validación estricta de tipos, documentación automática (Swagger UI, ReDoc) y manejo robusto de errores.
       </p>
 
       <h3>Información del Servidor</h3>
@@ -553,7 +541,6 @@
         <strong>Docs alternativa:</strong> <code>http://localhost:8000/redoc</code>
       </div>
 
-      <!-- Endpoint 1: Root -->
       <div class="api-endpoint">
         <div class="api-header">
           <div>
@@ -578,7 +565,6 @@
         </div>
       </div>
 
-      <!-- Endpoint 2: Health Check -->
       <div class="api-endpoint">
         <div class="api-header">
           <div>
@@ -589,7 +575,7 @@
         </div>
         <div class="api-body">
           <div class="api-description">
-            Health check minimalista. Útil para probes de load balancer o kubernetes.
+            Health check minimalista. Útil para probes de orquestación y monitoreo.
           </div>
           <div class="api-section">
             <h4>Respuesta (200 OK)</h4>
@@ -598,7 +584,6 @@
         </div>
       </div>
 
-      <!-- Endpoint 3: Query Row -->
       <div class="api-endpoint">
         <div class="api-header">
           <div>
@@ -609,7 +594,7 @@
         </div>
         <div class="api-body">
           <div class="api-description">
-            Retorna una fila del dataset procesado consultando por código ISO3 y año. Validación estricta: ISO3 de 3 caracteres, year en rango válido.
+            Retorna una fila del dataset procesado consultando por código ISO3 y año. Validación estricta: ISO3 de 3 caracteres y year en rango válido.
           </div>
 
           <div class="api-section">
@@ -660,7 +645,6 @@
         </div>
       </div>
 
-      <!-- Endpoint 4: Clean -->
       <div class="api-endpoint">
         <div class="api-header">
           <div>
@@ -671,7 +655,7 @@
         </div>
         <div class="api-body">
           <div class="api-description">
-            Aplica el pipeline de limpieza completo (estandarización, validación, tratamiento de outliers) a un lote de filas. Retorna datos procesados.
+            Aplica el pipeline de limpieza completo a un lote de filas. Retorna datos normalizados y validados.
           </div>
 
           <div class="api-section">
@@ -727,25 +711,24 @@
             <ul>
               <li><code>rows</code>: Lista no vacía de CleanRowIn</li>
               <li><code>min_length=1</code>: Al menos 1 fila</li>
-              <li>Todos los campos numéricos son StrictFloat (sin casting automático)</li>
+              <li>Campos numéricos con validación estricta</li>
               <li><code>extra="forbid"</code>: Validación estricta</li>
             </ul>
           </div>
         </div>
       </div>
 
-      <!-- Endpoint 5: Impute Missing -->
       <div class="api-endpoint">
         <div class="api-header">
           <div>
             <span class="api-method method-post">POST</span>
             <span class="api-path">/impute-missing</span>
           </div>
-          <div><strong>Ejecutar Pipeline MICE</strong></div>
+          <div><strong>Ejecutar Pipeline de Imputación</strong></div>
         </div>
         <div class="api-body">
           <div class="api-description">
-            Ejecuta imputación MICE (IterativeImputer) en el dataset completo. Operación costosa (async/background). Retorna resumen de imputación y archivos generados.
+            Ejecuta el pipeline de imputación sobre el dataset histórico: filtra países con exceso de faltantes, corre MICE por país, realiza pooling por promedio y guarda el resultado procesado.
           </div>
 
           <div class="api-section">
@@ -754,40 +737,12 @@
           </div>
 
           <div class="api-section">
-            <h4>Respuesta (200 OK)</h4>
-            <pre><code>{
-  "countries_removed": ["SLR", "MNP"],
-  "rows_original": 3864,
-  "rows_filtered": 3810,
-  "summary": [
-    {
-      "variable": "inflation",
-      "mean_original": 8.2,
-      "mean_imputed": 8.1,
-      "std_original": 12.3,
-      "std_imputed": 10.5,
-      "min_imputed": 0.1,
-      "max_imputed": 98.5,
-      "diff_mean": -0.1,
-      "diff_std": -1.8,
-      "base": "original"
-    }
-  ],
-  "saved_files": [
-    "data/processed/global_crisis_data_imputed_original.csv",
-    "data/processed/global_crisis_data_imputed_filtered.csv"
-  ]
-}</code></pre>
-          </div>
-
-          <div class="api-section">
             <h4>Características</h4>
             <ul>
-              <li>✅ Async: no bloquea el servidor</li>
-              <li>✅ Filtra países con >50% missing en ≥2 variables</li>
-              <li>✅ Mantiene dos versiones: original + filtered</li>
-              <li>✅ Resumen de imputación: medias, desviaciones, diferencias</li>
-              <li>✅ Genera CSVs en <code>data/processed/</code></li>
+              <li>✅ Filtra países con &gt;50% missing en al menos 2 variables</li>
+              <li>✅ Ejecuta imputación múltiple por país</li>
+              <li>✅ Usa pooling por promedio para consolidación final</li>
+              <li>✅ Genera resumen de imputación y archivos procesados</li>
             </ul>
           </div>
         </div>
@@ -815,13 +770,13 @@
           </tr>
           <tr>
             <td><strong>422 Unprocessable Entity</strong></td>
-            <td>Validación Pydantic fallida (tipado estricto).</td>
-            <td>iso3 ≠ 3 caracteres, year no es Int, extra fields</td>
+            <td>Validación Pydantic fallida.</td>
+            <td>ISO3 inválido, year fuera de rango o campos extra</td>
           </tr>
           <tr>
             <td><strong>500 Internal Server Error</strong></td>
-            <td>Error servidor (ej: CSV no existe).</td>
-            <td>Dataset procesado no encontrado</td>
+            <td>Error interno del servidor.</td>
+            <td>Archivo de datos no encontrado</td>
           </tr>
         </tbody>
       </table>
@@ -849,7 +804,7 @@ response = requests.post(
 )
 print(response.json())
 
-# Ejecutar MICE
+# Ejecutar imputación
 response = requests.post(f"{BASE_URL}/impute-missing")
 print(response.json())</code></pre>
 
@@ -869,41 +824,37 @@ print(response.json())</code></pre>
       <h3>Estructura del Proyecto</h3>
       <pre><code>Repositorio_APIS/
 ├── data/
-│   ├── raw/                           # Dataset original
-│   │   └── global_crisis_data.csv    # 3,864 obs, 15 columnas
-│   └── processed/                     # Datos después del pipeline
+│   ├── raw/
+│   │   └── global_crisis_data.csv
+│   └── processed/
 │       ├── global_crisis_data_clean.csv
-│       ├── global_crisis_data_imputed_original.csv
 │       └── global_crisis_data_imputed_filtered.csv
-├── docs/                              # Sitio web estático (GitHub Pages)
-│   ├── index.html                    # Esta página
+├── docs/
+│   ├── index.html
 │   ├── css/
 │   │   └── style.css
-│   └── img/                          # Gráficos EDA
+│   ├── img/
+│   │   ├── distribution_mice_inflation.png
+│   │   ├── distribution_mice_gdp_growth.png
+│   │   ├── distribution_mice_unemployment.png
+│   │   ├── distribution_mice_fed_funds_rate.png
+│   │   └── correlation_heatmap.png
+│   └── data/
+│       └── eda_stats.json
 ├── notebooks/
-│   ├── 01_eda_global_crisis.ipynb    # Análisis exploratorio
 │   └── analisis_exploratorio.ipynb
-├── src/                              # Código principal (modular)
+├── src/
 │   ├── __init__.py
-│   ├── limpieza.py                   # Pipeline de limpieza
-│   ├── outliers.py                   # Tratamiento de outliers (IQR, Quantile clipping)
-│   ├── missing_data.py               # Imputación MICE
-│   ├── schemas.py                    # Pydantic: InputSchema, OutputSchema
-│   ├── clean_schemas.py              # Pydantic: CleanRowIn, CleanRequest
-│   ├── decoradores.py                # @medir_tiempo, @requerir_columnas
-│   ├── estadisticas.py               # reporte_nulos, balance_binaria
-│   ├── api_manual.py                 # Handle de requests simuladas
-│   └── app.py                        # FastAPI con 5 endpoints
-├── scripts/
-│   ├── make_dataset.py               # Genera CSV procesado
-│   ├── demo_api_manual.py            # Demo de API manual
-│   └── generate_eda_plots.py         # Genera gráficos profesionales
+│   ├── limpieza.py
+│   ├── outliers.py
+│   ├── missing_data.py
+│   ├── schemas.py
+│   ├── clean_schemas.py
+│   └── app.py
 ├── tests/
-│   ├── test_api_manual.py            # Tests de validación
-│   └── test_outliers.py              # Tests de funciones puras
-├── requirements.txt                  # Dependencias
-├── pytest.ini                        # Configuración pytest
-└── README.md                         # Documentación principal
+├── requirements.txt
+├── pytest.ini
+└── README.md
 </code></pre>
 
       <h3>Módulos Clave</h3>
@@ -912,43 +863,44 @@ print(response.json())</code></pre>
         <h4>📌 src/limpieza.py</h4>
         <p><strong>Pipeline de limpieza básica:</strong></p>
         <ul>
-          <li><code>estandarizar_columnas()</code> - Trim espacios en names</li>
-          <li><code>limpiar_iso3()</code> - Uppercase, validar longitud</li>
-          <li><code>convertir_year()</code> - To Int64 nullable</li>
+          <li><code>estandarizar_columnas()</code> - trim de espacios en nombres</li>
+          <li><code>limpiar_iso3()</code> - uppercase y normalización del código país</li>
+          <li><code>convertir_year()</code> - conversión robusta a entero nullable</li>
+          <li><code>validar_panel_base()</code> - chequeos de consistencia del panel</li>
         </ul>
-        <p><em>Todas son funciones puras (no mutan inputs)</em></p>
+        <p><em>Funciones puras y reutilizables desde notebook o API.</em></p>
       </div>
 
       <div class="card">
         <h4>⚙️ src/outliers.py</h4>
-        <p><strong>Detección y recorte de outliers:</strong></p>
+        <p><strong>Diagnóstico de outliers por país y variable:</strong></p>
         <ul>
-          <li><code>limites_iqr(serie, k=1.5)</code> - Calcula Q1±k·IQR</li>
-          <li><code>recortar_iqr(df, col, k)</code> - Clip por IQR</li>
-          <li><code>recortar_cuantiles(df, col, q_inf, q_sup)</code> - Clip por percentiles (p1-p99)</li>
+          <li><code>outliers_por_pais()</code> - detecta outliers usando IQR dentro de cada país</li>
+          <li>Genera tabla detalle por observación</li>
+          <li>Genera tabla resumen por país-variable</li>
         </ul>
-        <p><em>Métodos implementados: IQR (Tukey) y Winsorización por cuantiles</em></p>
+        <p><em>Se usa con fines diagnósticos; no elimina datos automáticamente.</em></p>
       </div>
 
       <div class="card">
         <h4>🔍 src/missing_data.py</h4>
-        <p><strong>Imputación y diagnóstico de datos faltantes:</strong></p>
+        <p><strong>Imputación y consolidación de datos faltantes:</strong></p>
         <ul>
-          <li><code>filtrar_paises_exceso_missing()</code> - Identifica países con >50% missing</li>
-          <li><code>run_mice_panel()</code> - IterativeImputer con estructura panel</li>
-          <li><code>resumen_imputacion()</code> - Diagnostico pre/post imputación</li>
-          <li><code>outliers_por_pais()</code> - Detección heterogénea por país</li>
+          <li><code>filtrar_paises_exceso_missing()</code> - identifica países con exceso de faltantes</li>
+          <li><code>run_multiple_mice_by_country()</code> - imputación múltiple por país con Bayesian Ridge</li>
+          <li><code>promediar_imputaciones()</code> - pooling por promedio</li>
+          <li><code>resumen_imputacion()</code> - comparación pre/post imputación</li>
         </ul>
-        <p><em>Usa Scikit-learn's IterativeImputer (MICE = Multivariate Imputation by Chained Equations)</em></p>
+        <p><em>Usa IterativeImputer de Scikit-learn con YEAR como predictor temporal.</em></p>
       </div>
 
       <div class="card">
         <h4>📋 src/schemas.py</h4>
         <p><strong>Validación strict de Pydantic 2.0:</strong></p>
         <ul>
-          <li><code>InputSchema</code> - Request para /row (iso3, year)</li>
-          <li><code>OutputSchema</code> - Response con datos de fila</li>
-          <li>StrictStr, StrictInt, StrictFloat (sin casting)</li>
+          <li><code>InputSchema</code> - request para /row (iso3, year)</li>
+          <li><code>OutputSchema</code> - response con datos de fila</li>
+          <li>StrictStr, StrictInt, StrictFloat</li>
           <li><code>@field_validator</code> para lógica custom</li>
         </ul>
       </div>
@@ -957,13 +909,13 @@ print(response.json())</code></pre>
         <h4>🌐 src/app.py</h4>
         <p><strong>FastAPI application:</strong></p>
         <ul>
-          <li><code>GET /</code> - Root info</li>
-          <li><code>GET /health</code> - Health check</li>
-          <li><code>POST /row</code> - Buscar fila</li>
-          <li><code>POST /clean</code> - Limpiar lote</li>
-          <li><code>POST /impute-missing</code> - Ejecutar MICE (async)</li>
+          <li><code>GET /</code> - root info</li>
+          <li><code>GET /health</code> - health check</li>
+          <li><code>POST /row</code> - buscar fila</li>
+          <li><code>POST /clean</code> - limpiar lote</li>
+          <li><code>POST /impute-missing</code> - ejecutar imputación</li>
         </ul>
-        <p><em>Documentación automática en /docs (Swagger UI) y /redoc</em></p>
+        <p><em>Documentación automática en /docs (Swagger UI) y /redoc.</em></p>
       </div>
 
       <h3>Supuestos y Limitaciones</h3>
@@ -971,20 +923,20 @@ print(response.json())</code></pre>
       <div class="alert alert-warning">
         <strong>⚠️ Supuestos Estadísticos:</strong>
         <ul>
-          <li><strong>MICE:</strong> Asume MCAR (Missing Completely At Random) o MAR (Missing At Random). No validado MNAR.</li>
-          <li><strong>Outliers:</strong> Recorte por cuantiles superior al IQR para preservar asimetría natural.</li>
-          <li><strong>Panel:</strong> Regresores país/año incorporados en X antes de MICE.</li>
-          <li><strong>Crisis:</strong> Variables binarias desbalanceadas (80-90% clase 0).</li>
+          <li><strong>MICE:</strong> Se asume un mecanismo aproximadamente MAR, sustentado por el patrón temporal y geográfico de los faltantes. No se valida formalmente MNAR.</li>
+          <li><strong>Outliers:</strong> Los valores extremos se diagnostican por país y variable; no se eliminan automáticamente si son plausibles económicamente.</li>
+          <li><strong>Panel:</strong> La imputación final se realiza por país usando YEAR como predictor temporal, con pooling posterior entre imputaciones múltiples.</li>
+          <li><strong>Variables de crisis:</strong> Las variables binarias siguen siendo desbalanceadas.</li>
         </ul>
       </div>
 
       <div class="alert alert-danger">
         <strong>❌ Limitaciones Conocidas:</strong>
         <ul>
-          <li><strong>Escalabilidad CSV:</strong> Carga en memoria. Para >100k rows, usar BD (PostgreSQL + SQLAlchemy).</li>
-          <li><strong>Imputación no validada:</strong> MICE ejecuta 20 iteraciones sin convergence check explícito.</li>
-          <li><strong>Panel incompleto:</strong> No todos los países en todas los años (desbalance temporal).</li>
-          <li><strong>Sin versionado de datos:</strong> Considerar DVC para reproducibilidad de datos.</li>
+          <li><strong>Escalabilidad CSV:</strong> carga en memoria. Para datasets mucho más grandes, convendría una base de datos.</li>
+          <li><strong>Convergencia:</strong> IterativeImputer no incorpora un chequeo econométrico profundo de convergencia.</li>
+          <li><strong>Desempleo:</strong> sigue siendo la variable con mayor incertidumbre post-imputación.</li>
+          <li><strong>Missing residual:</strong> se mantiene un residual bajo en algunas celdas cuando no hay información suficiente para imputar de forma confiable.</li>
         </ul>
       </div>
 
@@ -996,16 +948,13 @@ py -3.11 -m venv .venv
 # 2. Instalar dependencias
 pip install -r requirements.txt
 
-# 3. Generar dataset procesado
-python -m scripts.make_dataset
+# 3. Ejecutar notebook EDA
+# notebooks/analisis_exploratorio.ipynb
 
-# 4. Generar gráficos EDA
-python scripts/generate_eda_plots.py
-
-# 5. Ejecutar tests
+# 4. Ejecutar tests
 pytest -v
 
-# 6. Iniciar API
+# 5. Iniciar API
 uvicorn src.app:app --reload
 
 # Navegar a http://localhost:8000/docs</code></pre>
@@ -1026,7 +975,7 @@ uvicorn src.app:app --reload
           <p><strong>Data Engineer & Statistician</strong></p>
           <p>Especialista en pipelines reproducibles, limpieza de datos y validación estadística.</p>
           <div class="btn-group">
-            <a href="https://github.com" class="btn btn-primary">GitHub</a>
+            <a href="https://github.com/jpablovargas340" class="btn btn-primary">GitHub</a>
             <a href="https://linkedin.com" class="btn btn-outline">LinkedIn</a>
           </div>
         </div>
@@ -1057,7 +1006,7 @@ uvicorn src.app:app --reload
     <div class="footer-content">
       <div class="footer-section">
         <h3>📊 Global Crisis Analyzer</h3>
-        <p>Análisis reproducible de crisis financieras usando ciencia de datos, estadística avanzada y arquitectura moderna en Python.</p>
+        <p>Análisis reproducible de crisis financieras usando ciencia de datos, imputación múltiple y arquitectura moderna en Python.</p>
       </div>
 
       <div class="footer-section">
@@ -1084,7 +1033,7 @@ uvicorn src.app:app --reload
         <h3>👥 Autores</h3>
         <div class="authors">
           <div class="author">
-            <a href="https://github.com">Juan Pablo Vargas</a>
+            <a href="https://github.com/jpablovargas340">Juan Pablo Vargas</a>
           </div>
           <div class="author">
             <a href="https://github.com">Edward Mora</a>
@@ -1099,9 +1048,7 @@ uvicorn src.app:app --reload
     </div>
   </footer>
 
-  <!-- Scripts simple (sin frameworks) -->
   <script>
-    // Smooth scroll links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
       anchor.addEventListener('click', function (e) {
         e.preventDefault();
@@ -1112,7 +1059,6 @@ uvicorn src.app:app --reload
       });
     });
 
-    // Add fade-in animation on load
     window.addEventListener('load', () => {
       document.querySelectorAll('.section').forEach((el, idx) => {
         el.style.animation = `fadeIn 0.6s ease-out ${idx * 0.1}s both`;

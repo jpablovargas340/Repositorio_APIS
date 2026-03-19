@@ -1,18 +1,14 @@
-PS C:\Users\edwar\Desktop\Estadistica 2026-1\Series De tiempo\Segundo semestre\Repositorio_APIS> git commit -m "integrar el cuaderno EDA con el módulo de datos faltantes"
-On branch feature/mice-missing-data
-Your branch is up to date with 'origin/feature/mice-missing-data'.
+# Python cache
+__pycache__/
+*.pyc
 
-Changes not staged for commit:
-  (use "git add <file>..." to update what will be committed)
-  (use "git restore <file>..." to discard changes in working directory)        
-        modified:   notebooks/analisis_exploratorio.ipynb
-        modified:   src/__pycache__/__init__.cpython-311.pyc
-        modified:   src/__pycache__/__init__.cpython-314.pyc
+# Virtual environments
+.venv/
+env/
 
-Untracked files:
-  (use "git add <file>..." to include in what will be committed)
-        src/__pycache__/missing_data.cpython-311.pyc
-        src/__pycache__/missing_data.cpython-314.pyc
+# Jupyter
+.ipynb_checkpoints/
 
-no changes added to commit (use "git add" and/or "git commit -a")
-PS C:\Users\edwar\Desktop\Estadistica 2026-1\Series De tiempo\Segundo semestre\Repositorio_APIS>
+# OS / editor
+.DS_Store
+Thumbs.db

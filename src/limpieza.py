@@ -3,46 +3,88 @@ from __future__ import annotations
 import pandas as pd
 
 
+# -------------------------
+# LIMPIEZA BÁSICA
+# -------------------------
+
 def estandarizar_columnas(df: pd.DataFrame) -> pd.DataFrame:
-    """
-    Elimina espacios en nombres de columnas.
-    """
-    df_copia = df.copy()
-    df_copia.columns = [col.strip() for col in df_copia.columns]
-    return df_copia
+    df = df.copy()
+    df.columns = [col.strip() for col in df.columns]
+    return df
 
 
 def limpiar_iso3(df: pd.DataFrame) -> pd.DataFrame:
-    """
-    Limpia y estandariza la columna ISO3.
-    """
-    df_copia = df.copy()
-    df_copia["iso3"] = df_copia["iso3"].astype(str).str.strip().str.upper()
-    return df_copia
+    df = df.copy()
+
+    if "iso3" not in df.columns:
+        raise KeyError("La columna 'iso3' no existe.")
+
+    df["iso3"] = df["iso3"].astype(str).str.strip().str.upper()
+    return df
 
 
 def convertir_year(df: pd.DataFrame) -> pd.DataFrame:
-    """
-    Convierte la columna year a entero nullable.
-    """
-    df_copia = df.copy()
-    df_copia["year"] = pd.to_numeric(df_copia["year"], errors="coerce").astype("Int64")
-    return df_copia
+    df = df.copy()
+
+    if "year" not in df.columns:
+        raise KeyError("La columna 'year' no existe.")
+
+    df["year"] = pd.to_numeric(df["year"], errors="coerce").astype("Int64")
+    return df
 
 
 def pipeline_limpieza_basica(df: pd.DataFrame) -> pd.DataFrame:
-    """
-    Aplica la limpieza básica encadenada.
-    """
-    df_limpio = estandarizar_columnas(df)
-    df_limpio = limpiar_iso3(df_limpio)
-    df_limpio = convertir_year(df_limpio)
-    return df_limpio
+    df = estandarizar_columnas(df)
+    df = limpiar_iso3(df)
+    df = convertir_year(df)
+    return df
 
+
+# -------------------------
+# VALIDACIÓN PANEL
+# -------------------------
+
+def validar_panel_base(df: pd.DataFrame) -> dict:
+    """
+    Valida estructura panel ISO3-YEAR.
+    No modifica datos, solo reporta.
+    """
+    resultados = {}
+
+    # Nulos
+    resultados["nulos_iso3"] = int(df["iso3"].isnull().sum())
+    resultados["nulos_year"] = int(df["year"].isnull().sum())
+
+    # Duplicados
+    resultados["duplicados_panel"] = int(df.duplicated(subset=["iso3", "year"]).sum())
+
+    # Rango de años
+    resultados["year_min"] = int(df["year"].min())
+    resultados["year_max"] = int(df["year"].max())
+
+    # Longitud ISO3
+    resultados["iso3_len_dist"] = (
+        df["iso3"].dropna().astype(str).str.len().value_counts().to_dict()
+    )
+
+    return resultados
+
+
+# -------------------------
+# PIPELINE COMPLETO
+# -------------------------
 
 def pipeline_limpieza_completa(df: pd.DataFrame) -> pd.DataFrame:
     """
-    Limpieza básica únicamente.
-    No modifica outliers.
+    Limpieza + validación.
     """
-    return pipeline_limpieza_basica(df)
+    df = pipeline_limpieza_basica(df)
+
+    # Validación (solo reporte)
+    resumen = validar_panel_base(df)
+
+    print("VALIDACIÓN PANEL:")
+    for k, v in resumen.items():
+        print(f"{k}: {v}")
+
+    return df
